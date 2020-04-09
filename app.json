@@ -1,0 +1,7 @@
+{
+  "name": "Pseudo Nephron Tracker",
+  "description": "An app used to track dialysis usage.",
+  "image": "heroku/python",
+  "repository": "https://github.com/macdre/pseudo-nephron-tracker",
+  "keywords": ["python", "flask", "vue.js"]
+}
