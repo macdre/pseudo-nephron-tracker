@@ -1,43 +1,29 @@
 <template>
-  <div id="app">
-    <Header />
-    <router-view/>
-  </div>
+    <div class="jumbotron">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 offset-sm-3">
+                    <div v-if="alert.message" :class="`alert ${alert.type}`">{{alert.message}}</div>
+                    <router-view></router-view>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
-import Header from './components/layout/Header';
 export default {
-  name:"app",
-  components: {
-    Header
-  }
-}
+    name: 'app',
+    computed: {
+        alert () {
+            return this.$store.state.alert
+        }
+    },
+    watch:{
+        $route (to, from){
+            // clear alert on location change
+            this.$store.dispatch('alert/clear');
+        }
+    } 
+};
 </script>
-
-
-<style>
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
-  body {
-    font-family: Arial, Helvetica, sans-serif;
-    line-height: 1.4;
-  }
-
-  .btn {
-    display: inline-block;
-    border: none;
-    background: #555;
-    color: #fff;
-    padding: 7px 20px;
-    cursor: pointer;
-  }
-
-  .btn:hover {
-    background: #666;
-  }
-</style>

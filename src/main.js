@@ -1,20 +1,14 @@
-import Vue from 'vue'
-import App from './js/App.vue'
-import router from './js/router'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faPlusSquare, faMinusSquare, faCoffee } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText } from '@fortawesome/vue-fontawesome'
+import Vue from 'vue';
+import { router } from './js/helpers';
+import { store } from './js/store';
+import App from './js/App';
 
-library.add(
-  faPlusSquare, 
-  faMinusSquare,
-  faCoffee
-)
-
-Vue.component('font-awesome-icon', FontAwesomeIcon)
-Vue.config.productionTip = false
+// setup fake backend
+import { configureFakeBackend } from './js/helpers';
+configureFakeBackend();
 
 new Vue({
   router,
+  store,
   render: h => h(App)
-}).$mount('#app')
+}).$mount('#app');
