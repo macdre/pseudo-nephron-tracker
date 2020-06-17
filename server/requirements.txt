@@ -1,0 +1,12 @@
+flask==1.1.2
+six==1.14.0
+smart-open==1.11.1
+Gunicorn==20.0.4
+gevent-websocket==0.10.1
+pathlib==1.0.1
+connexion==2.6.0
+swagger_ui_bundle==0.0.6
+flask_cors==3.0.8
+psycopg2==2.8.5
+python-jose==3.1.0
+flask_sqlalchemy==2.4.3
