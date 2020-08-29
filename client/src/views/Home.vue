@@ -1,9 +1,10 @@
 <template>
-  <div>
-    <hero />
-    <hr />
-    <home-content />
-  </div>
+  <b-container fluid>
+    <div>
+      <hero />
+      <hr />
+      <home-content />
+    </div>
 </template>
 
 <script>

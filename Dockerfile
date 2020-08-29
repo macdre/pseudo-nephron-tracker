@@ -18,6 +18,6 @@ COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
 COPY ./server/requirements.txt /app/requirements.txt
 WORKDIR /app
 RUN pip install -r ./requirements.txt; exit 0
-CMD gunicorn -b 0.0.0.0:5000 --chdir ./server app:app && \
-      sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/conf.d/default.conf && \
-      nginx -g 'daemon off;'
+CMD gunicorn -b 0.0.0.0:5000 --chdir ./server app:app --daemon && \
+    sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/conf.d/default.conf && \
+    nginx -g 'daemon off;'

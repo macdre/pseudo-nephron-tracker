@@ -1,6 +1,6 @@
 CREATE TABLE patient_vital_history
 (
-	user_id INTEGER,
+	user_id TEXT,
 	entry_date DATE,
 	systolic_pressure INTEGER,
 	diastolic_pressure INTEGER,

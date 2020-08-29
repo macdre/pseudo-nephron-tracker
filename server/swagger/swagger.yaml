@@ -21,3 +21,82 @@ paths:
             application/json:
               schema: 
                 type: string
+  /patient_vitals:
+    get:
+      operationId: app.get_patient_vitals
+      summary: Get the requested patient's vitals
+      description: Endpoint that returns a list of a patient's vitals given optional parameters
+      parameters:
+        - name: user_id
+          in: query
+          required: true
+          description: The ID of the user to return.
+          schema:
+            type: string
+        - name: quantity
+          in: query
+          description: The quantity of data points to return. Returns up to 1 by default.
+          schema:
+            type: integer
+            format: int64
+            minimum: 0
+      responses:
+        '200':
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/patient_vitals'
+        '400':
+          description: The specified user_id is invalid.
+        '404':
+          description: The specified user_id was not found.
+        default:
+          description: An unspecified error occurred
+    post:
+      operationId: app.post_patient_vitals
+      summary: Adds a new patient_vitals data point.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/patient_vitals'
+      responses:
+        '201':
+          description: Created
+        '409':
+          description: The data point already exists for the specified user_id and date
+    patch:
+      operationId: app.patch_patient_vitals
+      summary: Updates an exising patient_vitals data point.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/patient_vitals'
+      responses:
+        '200':
+          description: Updated
+        '404':
+          description: The data point does not exist for the specified user_id and date
+
+components:
+  schemas:
+    patient_vitals:
+      properties:
+        user_id:
+          type: string
+        entry_date:
+          type: string
+          format: date
+        systolic_pressure:
+          type: integer
+        diastolic_pressure:
+          type: integer
+        weight_in_kg:
+          type: number
+          format: float
