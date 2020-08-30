@@ -15,9 +15,9 @@ RUN apt-get update && apt-get --allow-change-held-packages -y install nginx pyth
     pip3 install --upgrade pip setuptools
 COPY --from=build-vue /app/client/dist /usr/share/nginx/html
 COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
-COPY ./server/requirements.txt /app/requirements.txt
+COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
+COPY ./server /app/server
+COPY ./launch.sh /app/launch.sh
 WORKDIR /app
-RUN pip install -r ./requirements.txt; exit 0
-CMD gunicorn -b 0.0.0.0:5000 --chdir ./server app:app --daemon && \
-    sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/conf.d/default.conf && \
-    nginx -g 'daemon off;'
+RUN pip install -r ./server/requirements.txt; exit 0
+CMD ./launch.sh
