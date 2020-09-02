@@ -17,7 +17,7 @@ COPY --from=build-vue /app/client/dist /usr/share/nginx/html
 COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
 COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./server /app/server
-COPY ./launch.sh /app/launch.sh
+COPY ./scripts/launch.sh /app/launch.sh
 WORKDIR /app
 RUN pip install -r ./server/requirements.txt; exit 0
 CMD ./launch.sh
