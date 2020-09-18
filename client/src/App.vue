@@ -1,10 +1,10 @@
 <template>
   <div id="app" class="d-flex flex-column h-100">
     <nav-bar />
-    <b-container fluid>
+    <b-container fluid class='px-0'>
       <error />
-      <div class="mt-5">
-        <router-view />
+      <div class="my-1 px-0">
+        <router-view/>
       </div>
     </b-container>
     <footer class="bg-light text-center p-3">

@@ -1,9 +1,8 @@
 <template>
   <b-container fluid>
     <div>
-      <hero />
-      <hr />
-      <home-content />
+      <hero v-if="!$auth.isAuthenticated && !$auth.loading"/>
+      <home-content v-if="$auth.isAuthenticated"/>
     </div>
 </template>
 
@@ -19,11 +18,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-.next-steps {
-  .fa-link {
-    margin-right: 5px;
-  }
-}
-</style>

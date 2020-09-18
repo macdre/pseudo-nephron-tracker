@@ -1,24 +1,27 @@
-import Vue from "vue";
+import Vue from 'vue';
 
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import Vuecidity from 'vuecidity';
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faLink, faUser, faPowerOff } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faLink, faUser, faPowerOff, faNotesMedical, faBoxes, faChartBar, faPrescriptionBottle, faCogs } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { dom } from '@fortawesome/fontawesome-svg-core'
 
-import "bootstrap/dist/css/bootstrap.min.css"
-import "bootstrap-vue/dist/bootstrap-vue.css"
+import 'vuecidity/dist/lib/vuecidity.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
 
-import App from "./App.vue";
-import router from "./router";
-import { Auth0Plugin } from "./auth";
-import HighlightJs from "./directives/highlight";
-import { domain, clientId, audience } from "../auth_config.json";
+import App from './App.vue';
+import router from './router';
+import { Auth0Plugin } from './auth';
+import HighlightJs from './directives/highlight';
+import { domain, clientId, audience } from '../auth_config.json';
 
 Vue.config.productionTip = false;
 
-// Install BootstrapVue
-Vue.use(BootstrapVue)
-Vue.use(IconsPlugin)
+Vue.use(Vuecidity);
+Vue.use(BootstrapVue);
+Vue.use(IconsPlugin);
 
 Vue.use(Auth0Plugin, {
   domain,
@@ -33,12 +36,13 @@ Vue.use(Auth0Plugin, {
   }
 });
 
-Vue.directive("highlightjs", HighlightJs);
+Vue.directive('highlightjs', HighlightJs);
 
-library.add(faLink, faUser, faPowerOff);
-Vue.component("font-awesome-icon", FontAwesomeIcon);
+library.add(faLink, faUser, faPowerOff, faNotesMedical, faBoxes, faChartBar, faPrescriptionBottle, faCogs);
+Vue.component('font-awesome-icon', FontAwesomeIcon);
+dom.watch();
 
 new Vue({
   router,
   render: h => h(App)
-}).$mount("#app");
+}).$mount('#app');

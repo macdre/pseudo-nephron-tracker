@@ -1,7 +1,7 @@
 # Makefile for local build management
 
 SHELL = /usr/bin/bash
-MY_VAR := $(shell pwd)
+CURR_DIR := $(shell pwd)
 
 .PHONY: build-docker
 build-docker:
@@ -13,12 +13,8 @@ build-vue:
 
 .PHONY: run
 run:
-	./scripts/run-local.sh $(MY_VAR)
+	./scripts/run-local.sh $(CURR_DIR)
 
 .PHONY: follow
 follow:
 	docker logs -f flask-vue
-
-.PHONY: test
-test:
-	@echo MY_VAR is $(MY_VAR)

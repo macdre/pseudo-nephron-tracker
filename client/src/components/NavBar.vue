@@ -3,13 +3,14 @@
     <b-navbar toggleable="md" type="dark" variant="primary">
       <b-navbar-brand href="#">
         <img src="/logo.png" alt="logo" width=50>
+        Pseudo-Nephron-Project
       </b-navbar-brand>
       
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
 
-        <b-navbar-nav class="mr-auto">
+        <!-- <b-navbar-nav class="mr-auto">
           <b-nav-item to="/">
             <font-awesome-icon class="mr-3" icon="home"/>Home
           </b-nav-item>
@@ -29,7 +30,7 @@
             <font-awesome-icon class="mr-3" icon="cubes"/>Setup Templates
           </b-nav-item>
           
-        </b-navbar-nav>
+        </b-navbar-nav> -->
 
         <b-navbar-nav right v-if="!$auth.isAuthenticated && !$auth.loading">
           <b-nav-item>
@@ -74,7 +75,7 @@
     methods: {
       login() {
         this.$auth.loginWithRedirect();
-        this.$router.push({ path: "/treatment" });
+        this.$router.push({ path: "/" });
       },
       logout() {
         this.$auth.logout();
