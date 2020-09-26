@@ -1,3 +1,5 @@
 node_modules
 .vscode
 dist
+debug.log
+server/__pycache__

@@ -10,17 +10,17 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "@auth0/auth0-spa-js": "^1.12.0",
+    "@auth0/auth0-spa-js": "^1.12.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.30",
     "@fortawesome/free-solid-svg-icons": "^5.14.0",
     "@fortawesome/vue-fontawesome": "^2.0.0",
     "axios": "^0.20.0",
-    "bootstrap-vue": "2.17.1",
+    "bootstrap-vue": "2.17.3",
     "highlight.js": "^10.2.0",
     "jquery": "^3.5.1",
     "@mdi/font": "^5.6.55",
     "vue": "^2.6.12",
-    "vue-router": "^3.4.3",
+    "vue-router": "^3.4.4",
     "vuecidity": "^1.0.7"
   },
   "devDependencies": {
