@@ -161,16 +161,21 @@
                   >
                     <b-form-select v-model="bowel_obs" :options="bowelObsOptions"></b-form-select>
                   </b-form-group>
+                  <b-form-group
+                    label-cols-sm="6"
+                    label="Treatment Problems?"
+                    label-align-sm="right"
+                    label-for="treatment_problems"
+                  >
+                    <b-form-select v-model="treatment_problems" :options="treatProbOptions"></b-form-select>
+                  </b-form-group>                  
                 </vc-col>
-
-
-
-
-
+                
+                <vc-col :span="8" xs24 sm12 md6>
+                  <h5>Notes/Comments</h5>
+                  <br/>
 <!--  
-      comments
-
-      problem: yes, no, notes
+      comments / notes
       -->
 
               </vc-layout>
@@ -212,6 +217,8 @@ export default {
       exit_color: null,
       exit_sensitivity: null,
       exit_condition: null,
+      bowel_obs: null,
+      treatment_problems: null,
       drainColorOptions: [
         { value: null, text: 'Please select an option' },
         { value: 'no-color', text: 'No Color' },
@@ -256,6 +263,11 @@ export default {
         { value: 'hard', text: 'Hard' },
         { value: 'bloody', text: 'Bloody' },
         { value: 'no-stool', text: 'No Stool For Last 24 Hours' }
+      ],
+      treatProbOptions: [
+        { value: null, text: 'Please select an option' },
+        { value: 'no', text: 'No' },
+        { value: 'yes', text: 'Yes' }
       ]
     };
   },
@@ -301,6 +313,8 @@ export default {
       this.exit_color = null
       this.exit_sensitivity = null
       this.exit_condition = null
+      this.bowel_obs = null
+      this.treatment_problems = null
       // Trick to reset/clear native browser form validation state
       this.show = false
       this.isReset = true
