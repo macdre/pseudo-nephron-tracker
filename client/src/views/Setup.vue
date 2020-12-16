@@ -1,44 +1,55 @@
 <template>
-  <b-container fluid>
-    <h1 class="my-5 text-center">Setup</h1>
+  <b-container fluid fill-height class='px-0'>
+    <vc-layout v-resize="resize" class="align-center mx-0" spacing="8">
+      <vc-col :span="24">
+        <vc-card class="elevation-3">
+          <card-title-nav title="Setup"/>
 
-    <b-row class="my-1">
-      <b-col sm="3">
-        <div class="my-2">
-          <b-button @click="callApi" small color="primary">Get Test</b-button>
-        </div>
-        <p>{{ apiMessage1 }}</p>
-      </b-col>
-    </b-row>
+          <vc-card-text>
+            
+            <b-row class="my-1">
+              <b-col sm="3">
+                <div class="my-2">
+                  <b-button @click="callApi" small color="primary">Get Test</b-button>
+                </div>
+                <p>{{ apiMessage1 }}</p>
+              </b-col>
+            </b-row>
 
-    <b-row class="my-1">
-      <b-col sm="3">
-        <b-form-input
-          v-model="user_id"
-          label="User ID"
-          placeholder="123"
-        ></b-form-input>
-      </b-col>
-      <b-col sm="3">
-        <b-form-input
-          v-model="quantity"
-          label="Quantity"
-          placeholder="1"
-        ></b-form-input>
-      </b-col>
-      <b-col sm="3">
-        <b-button @click="getPatientVitals" small color="primary">Get Patient Vitals</b-button>
-        <p>{{ apiMessage2 }}</p>
-      </b-col>
-    </b-row>
+            <b-row class="my-1">
+              <b-col sm="3">
+                <b-form-input
+                  v-model="user_id"
+                  label="User ID"
+                  placeholder="123"
+                ></b-form-input>
+              </b-col>
+              <b-col sm="3">
+                <b-form-input
+                  v-model="quantity"
+                  label="Quantity"
+                  placeholder="1"
+                ></b-form-input>
+              </b-col>
+              <b-col sm="3">
+                <b-button @click="getPatientVitals" small color="primary">Get Patient Vitals</b-button>
+                <p>{{ apiMessage2 }}</p>
+              </b-col>
+            </b-row>
     
+          </vc-card-text>
+        </vc-card>
+      </vc-col>
+    </vc-layout>
   </b-container>
 </template>
 
 <script>
 import axios from "axios";
+import CardTitleNav from "../components/CardTitleNav";
 
 export default {
+  components: { CardTitleNav },
   name: "inventory",
   data() {
     return {

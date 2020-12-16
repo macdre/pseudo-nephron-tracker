@@ -27,7 +27,7 @@ def get_patient_vitals(user_id, quantity=1):
     query_result = db.session \
         .query(PatientVitals) \
         .filter(PatientVitals.user_id == user_id) \
-        .order_by(PatientVitals.entry_date).limit(quantity).all()
+        .order_by(PatientVitals.entry_date.desc()).limit(quantity).all()
     return json.dumps([row.json() for row in query_result])
 
 @cross_origin(headers=["Content-Type", "Authorization"])

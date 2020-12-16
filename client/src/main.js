@@ -3,7 +3,7 @@ import Vue from 'vue';
 import Vuecidity from 'vuecidity';
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faLink, faUser, faPowerOff, faNotesMedical, faBoxes, faChartBar, faPrescriptionBottle, faCogs } from '@fortawesome/free-solid-svg-icons';
+import { faLink, faUser, faPowerOff, faNotesMedical, faBoxes, faChartBar, faPrescriptionBottle, faCogs, faHome, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { dom } from '@fortawesome/fontawesome-svg-core'
 
@@ -38,7 +38,8 @@ Vue.use(Auth0Plugin, {
 
 Vue.directive('highlightjs', HighlightJs);
 
-library.add(faLink, faUser, faPowerOff, faNotesMedical, faBoxes, faChartBar, faPrescriptionBottle, faCogs);
+library.add(faLink, faUser, faPowerOff, faNotesMedical, faBoxes, 
+  faChartBar, faPrescriptionBottle, faCogs, faHome, faArrowLeft);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 dom.watch();
 

@@ -1,7 +1,7 @@
 <template>
   <div class="mb-3">
     <b-navbar toggleable="md" type="dark" variant="primary">
-      <b-navbar-brand href="#">
+      <b-navbar-brand to="/">
         <img src="/logo.png" alt="logo" width=50>
         Pseudo-Nephron-Project
       </b-navbar-brand>
@@ -9,28 +9,6 @@
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
-
-        <!-- <b-navbar-nav class="mr-auto">
-          <b-nav-item to="/">
-            <font-awesome-icon class="mr-3" icon="home"/>Home
-          </b-nav-item>
-          <b-nav-item v-if="$auth.isAuthenticated" to="/treatment">
-            <font-awesome-icon class="mr-3" icon="heartbeat"/>Record Current Treatment
-          </b-nav-item>
-          <b-nav-item v-if="$auth.isAuthenticated" to="/inventory">
-            <font-awesome-icon class="mr-3" icon="cubes"/>Inventory
-          </b-nav-item>
-          <b-nav-item v-if="$auth.isAuthenticated" to="/metrics">
-            <font-awesome-icon class="mr-3" icon="cubes"/>Metrics
-          </b-nav-item>
-          <b-nav-item v-if="$auth.isAuthenticated" to="/medications">
-            <font-awesome-icon class="mr-3" icon="cubes"/>Medications
-          </b-nav-item>
-          <b-nav-item v-if="$auth.isAuthenticated" to="/setup">
-            <font-awesome-icon class="mr-3" icon="cubes"/>Setup Templates
-          </b-nav-item>
-          
-        </b-navbar-nav> -->
 
         <b-navbar-nav right v-if="!$auth.isAuthenticated && !$auth.loading">
           <b-nav-item>
@@ -84,10 +62,3 @@
     }
   };
 </script>
-
-<style>
-  #mobileAuthNavBar {
-    min-height: 125px;
-    justify-content: space-between;
-  }
-</style>

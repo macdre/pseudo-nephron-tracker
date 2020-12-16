@@ -1,25 +1,49 @@
 <template>
-  <b-container fluid>
-    <h1 class="my-5 text-center">Metrics</h1>
-
-    <b-row class="my-1">
-      <b-table striped hover :items="metricItems" :fields="metricsFields"></b-table>
-    </b-row>
-    
+  <b-container fluid fill-height class='px-0'>
+    <vc-layout v-resize="resize" class="align-center mx-0" spacing="8">
+      <vc-col :span="24">
+        <vc-card class="elevation-3">
+          <card-title-nav title="Explore Metrics"/>
+          <vc-card-text>
+            <b-row class="my-1">
+              <b-col :span="24">
+                <b-table
+                  id="my-table" :items="metricItems" :fields="metricsFields" 
+                  :per-page="perPage" :current-page="currentPage" small>
+                </b-table>
+                <b-pagination
+                  v-model="currentPage" :total-rows="rows" :per-page="perPage" 
+                  aria-controls="my-table" align="center">
+                </b-pagination>
+              </b-col>
+            </b-row>
+          </vc-card-text>
+        </vc-card>
+      </vc-col>
+    </vc-layout>
   </b-container>
 </template>
 
 <script>
 import axios from "axios";
+import CardTitleNav from "../components/CardTitleNav";
 
 export default {
+  components: { CardTitleNav },
   name: "metrics",
   data() {
     return {
+      perPage: 10,
+      currentPage: 1,
       metricItems: "",
       metricsFields: ['entry_date', 'systolic_pressure', 'diastolic_pressure', 'weight_in_kg'],
       quantity: 9999
     };
+  },
+  computed: {
+    rows() {
+      return this.metricItems.length
+    }
   },
   methods: {
     async getPatientVitals() {
