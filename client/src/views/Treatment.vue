@@ -17,12 +17,12 @@
                     label-for="entry_date"
                   >
                     <b-form-datepicker
-                      id="entry_date"
                       today-button
                       reset-button
                       close-button
-                      v-model="defaultDate"
-                      reset-value="defaultDate"
+                      id="entry_date"
+                      v-model="entry_date"
+                      reset-value="entry_date"
                       v-if="!isReset"
                     ></b-form-datepicker>
                   </b-form-group>
@@ -33,7 +33,7 @@
                     label-align-sm="right"
                     label-for="systolic_pressure"
                   >
-                    <b-form-input v-model.number="systolic_pressure" placeholder=180 type="number"></b-form-input>
+                    <b-form-input required id="systolic_pressure" v-model.number="systolic_pressure" placeholder="Please Enter" type="number"></b-form-input>
                   </b-form-group>
 
                   <b-form-group
@@ -42,7 +42,7 @@
                     label-align-sm="right"
                     label-for="diastolic_pressure"
                   >
-                    <b-form-input v-model.number="diastolic_pressure" placeholder=130 type="number"></b-form-input>
+                    <b-form-input required id="diastolic_pressure" v-model.number="diastolic_pressure" placeholder="Please Enter" type="number"></b-form-input>
                   </b-form-group>
 
                   <b-form-group
@@ -51,7 +51,7 @@
                     label-align-sm="right"
                     label-for="weight_in_kg"
                   >
-                    <b-form-input v-model.number="weight_in_kg" placeholder=300 type="number" ></b-form-input>
+                    <b-form-input required id="weight_in_kg" v-model.number="weight_in_kg" placeholder="Please Enter" type="number"></b-form-input>
                   </b-form-group>
                 </vc-col>
                 
@@ -64,7 +64,7 @@
                     label-align-sm="right"
                     label-for="initial_drain"
                   >
-                    <b-form-input id="initial_drain" placeholder="initial_drain"></b-form-input>
+                    <b-form-input required id="initial_drain" v-model.number="initial_drain" placeholder="Please Enter" type="number"></b-form-input>
                   </b-form-group>
                   <b-form-group
                     label-cols-sm="6"
@@ -72,7 +72,7 @@
                     label-align-sm="right"
                     label-for="total_uf"
                   >
-                    <b-form-input id="total_uf" placeholder="total_uf"></b-form-input>
+                    <b-form-input required id="total_uf" v-model.number="total_uf" placeholder="Please Enter" type="number"></b-form-input>
                   </b-form-group>
                   <b-form-group
                     label-cols-sm="6"
@@ -80,16 +80,14 @@
                     label-align-sm="right"
                     label-for="average_dwell"
                   >
-                    <b-form-input id="average_dwell" placeholder="average_dwell"></b-form-input>
+                    <!-- Hard code the locale to de as it gives us a 24 hour clock that is 0-based -->
+                    <b-form-timepicker required id="average_dwell" v-model="average_dwell" locale="de"></b-form-timepicker>
                   </b-form-group>
-                  <b-form-group
-                    label-cols-sm="6"
-                    label="Added/Lost Dwell:"
-                    label-align-sm="right"
-                    label-for="added_lost_dwell"
-                  >
-                    <b-form-input id="added_lost_dwell" placeholder="added_lost_dwell"></b-form-input>
-                  </b-form-group>
+                  <b-form-row>
+                    <b-col><label>Added/Lost Dwell:</label></b-col>
+                    <b-col><b-form-select required id="added_lost_dwell_type" v-model="added_lost_dwell_type" :options="addedLostOptions"/></b-col>
+                    <b-col><b-form-timepicker required id="added_lost_dwell_value" v-model="added_lost_dwell_value" locale="de"/></b-col>
+                  </b-form-row>
                 </vc-col>
 
                 <vc-col :span="8" xs24 sm12 md6>
@@ -101,7 +99,7 @@
                     label-align-sm="right"
                     label-for="drain_color"
                   >
-                    <b-form-select id="drain_color" v-model="drain_color" :options="drainColorOptions"></b-form-select>
+                    <b-form-select required id="drain_color" v-model="drain_color" :options="drainColorOptions"></b-form-select>
                   </b-form-group>
                   <b-form-group
                     label-cols-sm="6"
@@ -109,7 +107,7 @@
                     label-align-sm="right"
                     label-for="drain_clarity"
                   >
-                    <b-form-select v-model="drain_clarity" :options="drainClarityOptions"></b-form-select>
+                    <b-form-select required id="drain_clarity" v-model="drain_clarity" :options="drainClarityOptions"></b-form-select>
                   </b-form-group>
                   <b-form-group
                     label-cols-sm="6"
@@ -117,7 +115,7 @@
                     label-align-sm="right"
                     label-for="fibrin_present"
                   >
-                    <b-form-select v-model="fibrin_present" :options="fibrinPresentOptions"></b-form-select>
+                    <b-form-select required id="fibrin_present" v-model="fibrin_present" :options="fibrinPresentOptions"></b-form-select>
                   </b-form-group>
                 </vc-col>
 
@@ -130,7 +128,7 @@
                     label-align-sm="right"
                     label-for="exit_color"
                   >
-                    <b-form-select v-model="exit_color" :options="exitColorOptions"></b-form-select>
+                    <b-form-select required id="exit_color" v-model="exit_color" :options="exitColorOptions"></b-form-select>
                   </b-form-group>
                   <b-form-group
                     label-cols-sm="6"
@@ -138,7 +136,7 @@
                     label-align-sm="right"
                     label-for="exit_sensitivity"
                   >
-                    <b-form-select v-model="exit_sensitivity" :options="exitSensitivityOptions"></b-form-select>
+                    <b-form-select required id="exit_sensitivity" v-model="exit_sensitivity" :options="exitSensitivityOptions"></b-form-select>
                   </b-form-group>
                   <b-form-group
                     label-cols-sm="6"
@@ -146,7 +144,7 @@
                     label-align-sm="right"
                     label-for="exit_condition"
                   >
-                    <b-form-select v-model="exit_condition" :options="exitConditionOptions"></b-form-select>
+                    <b-form-select required id="exit_condition" v-model="exit_condition" :options="exitConditionOptions"></b-form-select>
                   </b-form-group>                  
                 </vc-col>
 
@@ -159,7 +157,7 @@
                     label-align-sm="right"
                     label-for="bowel_obs"
                   >
-                    <b-form-select v-model="bowel_obs" :options="bowelObsOptions"></b-form-select>
+                    <b-form-select required id="bowel_obs" v-model="bowel_obs" :options="bowelObsOptions"></b-form-select>
                   </b-form-group>
                   <b-form-group
                     label-cols-sm="6"
@@ -167,17 +165,21 @@
                     label-align-sm="right"
                     label-for="treatment_problems"
                   >
-                    <b-form-select v-model="treatment_problems" :options="treatProbOptions"></b-form-select>
+                    <b-form-select required id="treatment_problems" v-model="treatment_problems" :options="treatProbOptions"></b-form-select>
                   </b-form-group>                  
                 </vc-col>
                 
                 <vc-col :span="8" xs24 sm12 md6>
                   <h5>Notes/Comments</h5>
                   <br/>
-<!--  
-      comments / notes
-      -->
-
+                  <b-form-textarea
+                    id="comments"
+                    v-model="comments"
+                    placeholder="Enter Comments..."
+                    rows="3"
+                    max-rows="6"
+                  ></b-form-textarea>
+                </vc-col>
               </vc-layout>
 
               <vc-layout v-resize="resize" class="align-center mx-0" spacing="8">
@@ -201,16 +203,21 @@ import moment from "moment";
 import CardTitleNav from "../components/CardTitleNav";
 
 export default {
-  components: { CardTitleNav },
+  components: {
+    CardTitleNav
+  },
   name: "treatment",
   data() {
     return {
-      entry_date: "",
+      entry_date: moment.utc(new Date()).local().format('YYYY-MM-DD'),
       systolic_pressure: "",
       diastolic_pressure: "",
       weight_in_kg: "",
-      defaultDate: moment.utc(new Date()).local().format(),
-      isReset: false,
+      initial_drain: "",
+      total_uf: "",
+      average_dwell: "01:30",
+      added_lost_dwell_type: null,
+      added_lost_dwell_value: "00:00",
       drain_color: null,
       drain_clarity: null,
       fibrin_present: null,
@@ -219,6 +226,12 @@ export default {
       exit_condition: null,
       bowel_obs: null,
       treatment_problems: null,
+      comments: null,
+      addedLostOptions: [
+        { value: null, text: 'Select...' },
+        { value: 'added', text: 'Added' },
+        { value: 'lost', text: 'Lost' },
+      ],
       drainColorOptions: [
         { value: null, text: 'Please select an option' },
         { value: 'no-color', text: 'No Color' },
@@ -273,6 +286,7 @@ export default {
   },
   methods: {
     async submitPatientVitals(e) {
+      console.log("Hitting the submit button!!!!");
       var sub_array = this.$auth.user.sub.split("|");
       if (sub_array.length == 2) {
         var user_id = sub_array[1];
@@ -282,31 +296,54 @@ export default {
           entry_date: this.entry_date,
           systolic_pressure: this.systolic_pressure,
           diastolic_pressure: this.diastolic_pressure,
-          weight_in_kg: this.weight_in_kg
+          weight_in_kg: this.weight_in_kg,
+          initial_drain: this.initial_drain,
+          total_uf: this.total_uf,
+          average_dwell: this.average_dwell,
+          added_lost_dwell_type: this.added_lost_dwell_type,
+          added_lost_dwell_value: this.added_lost_dwell_value,
+          drain_color: this.drain_color,
+          drain_clarity: this.drain_clarity,
+          fibrin_present: this.fibrin_present,
+          exit_color: this.exit_color,
+          exit_sensitivity: this.exit_sensitivity,
+          exit_condition: this.exit_condition,
+          bowel_obs: this.bowel_obs,
+          treatment_problems: this.treatment_problems,
+          comments: this.comments
         };
+        //process.stdout.write(JSON.stringify(patient_vitals) + '\n');
+        console.log(JSON.stringify(patient_vitals));
 
         // Get the access token from the auth wrapper
         const token = await this.$auth.getTokenSilently();
         // Use Axios to make a call to the API
-        const { data } = await axios.post("/v1/patient_vitals", {
-          headers: {
-            // send the access token through the 'Authorization' header
-            Authorization: `Bearer ${token}`    
-          },
-          params: {
+        const { data } = await axios.post("/v1/patient_vitals", 
+          {
             patient_vitals: patient_vitals
+          },
+          {
+            headers: {
+              // send the access token through the 'Authorization' header
+              Authorization: `Bearer ${token}`    
+            }
           }
-        });
+        );
         this.apiMessage = data;
       }
     },
     onReset(e) {
       e.preventDefault()
       // Reset our form values
-      this.entry_date = moment.utc(new Date()).local().format()
+      this.entry_date = moment.utc(new Date()).local().format('YYYY-MM-DD')
       this.systolic_pressure = ""
       this.diastolic_pressure = ""
       this.weight_in_kg = ""
+      this.initial_drain = ""
+      this.total_uf = ""
+      this.average_dwell = "01:30"
+      this.added_lost_dwell_type = null
+      this.added_lost_dwell_value = "00:00"
       this.drain_color = null
       this.drain_clarity = null
       this.fibrin_present = null
@@ -315,6 +352,7 @@ export default {
       this.exit_condition = null
       this.bowel_obs = null
       this.treatment_problems = null
+      this.comments = null
       // Trick to reset/clear native browser form validation state
       this.show = false
       this.isReset = true

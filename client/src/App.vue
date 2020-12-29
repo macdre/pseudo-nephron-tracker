@@ -19,11 +19,13 @@
 <script>
 import NavBar from "./components/NavBar";
 import Error from "./components/Error";
+import { BContainer } from "bootstrap-vue";
 
 export default {
   components: {
     NavBar,
-    Error
+    Error,
+    BContainer
   }
 };
 </script>

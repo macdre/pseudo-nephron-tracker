@@ -29,14 +29,16 @@ import axios from "axios";
 import CardTitleNav from "../components/CardTitleNav";
 
 export default {
-  components: { CardTitleNav },
+  components: {
+    CardTitleNav
+  },
   name: "metrics",
   data() {
     return {
       perPage: 10,
       currentPage: 1,
       metricItems: "",
-      metricsFields: ['entry_date', 'systolic_pressure', 'diastolic_pressure', 'weight_in_kg'],
+      metricsFields: ['entry_date', 'systolic_pressure', 'diastolic_pressure', 'weight_in_kg', 'initial_drain'],
       quantity: 9999
     };
   },

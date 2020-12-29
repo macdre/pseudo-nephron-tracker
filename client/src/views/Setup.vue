@@ -49,7 +49,9 @@ import axios from "axios";
 import CardTitleNav from "../components/CardTitleNav";
 
 export default {
-  components: { CardTitleNav },
+  components: {
+    CardTitleNav
+  },
   name: "inventory",
   data() {
     return {

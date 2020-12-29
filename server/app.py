@@ -10,15 +10,14 @@ from flask import jsonify
 from flask_cors import CORS, cross_origin
 
 from auth import requires_auth, AuthError
-from models import db, PatientVitals
-from sqlalchemy.orm import load_only
+from models import db, PatientVitals, PatientVitalsSchema
 
 @cross_origin(headers=["Content-Type", "Authorization"])
 @cross_origin(headers=["Access-Control-Allow-Origin", "http://localhost:5000"])
 @requires_auth
 def test():
     query_result = db.session.query(PatientVitals).all()
-    return json.dumps([row.json() for row in query_result])
+    return json.dumps([PatientVitalsSchema().dump(row) for row in query_result])
 
 @cross_origin(headers=["Content-Type", "Authorization"])
 @cross_origin(headers=["Access-Control-Allow-Origin", "http://localhost:5000"])
@@ -28,25 +27,20 @@ def get_patient_vitals(user_id, quantity=1):
         .query(PatientVitals) \
         .filter(PatientVitals.user_id == user_id) \
         .order_by(PatientVitals.entry_date.desc()).limit(quantity).all()
-    return json.dumps([row.json() for row in query_result])
+    # We need to catch db errors and convert them into http return codes
+    return json.dumps([PatientVitalsSchema().dump(row) for row in query_result])
 
 @cross_origin(headers=["Content-Type", "Authorization"])
 @cross_origin(headers=["Access-Control-Allow-Origin", "http://localhost:5000"])
 @requires_auth
 def post_patient_vitals(body):
-    # new_patient_vitals = PatientVitals(body['patient_vitals']['user_id'],
-    #                                    body['patient_vitals']['entry_date'],
-    #                                    body['patient_vitals']['systolic_pressure'],
-    #                                    body['patient_vitals']['diastolic_pressure'],
-    #                                    body['patient_vitals']['weight_in_kg'])
-    new_patient_vitals = PatientVitals(json.dumps(body['patient_vitals']))
-
-    # Add the record to the session object
+    print(body['patient_vitals'])
+    new_patient_vitals = PatientVitalsSchema().load(body['patient_vitals'], session=db.session)
     db.session.add(new_patient_vitals)
-    # commit the record the database
-    db.session.commit()
+    retVal2 = db.session.commit()
+    print("Second is " + retVal2)
 
-    # do something
+    # We need to catch db errors and convert them into http return codes
     return '201'
 
 @cross_origin(headers=["Content-Type", "Authorization"])
@@ -66,7 +60,6 @@ CORS(application)
 application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 application.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 db.init_app(application)
-
 
 @application.errorhandler(AuthError)
 def handle_auth_error(ex):

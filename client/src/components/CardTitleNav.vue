@@ -4,7 +4,7 @@
       <vc-col :span="6">
         <span class="body=2 vc-block align-left" style="font-size: 24px;">
             <b-link @click="$router.go(-1)">
-            <font-awesome-icon style="color: white;" icon="arrow-left"/>
+              <font-awesome-icon style="color: white;" icon="arrow-left"/>
             </b-link>                  
         </span>
       </vc-col>
@@ -14,7 +14,7 @@
       <vc-col :span="6">
         <span class="body=2 vc-block align-right" style="font-size: 24px;">
             <b-link to="/#">
-            <font-awesome-icon style="color: white;" icon="home"/>
+              <font-awesome-icon style="color: white;" icon="home"/>
             </b-link>
         </span>
       </vc-col>            
@@ -23,6 +23,7 @@
 </template>
 
 <script>
+
   export default {
     name: "CardTitleNav",
     props: [

@@ -100,3 +100,31 @@ components:
         weight_in_kg:
           type: number
           format: float
+        initial_drain:
+          type: integer
+        total_uf:
+          type: integer
+        average_dwell:
+          type: string
+        added_lost_dwell_type:
+          type: string
+        added_lost_dwell_value:
+          type: string
+        drain_color:
+          type: string
+        drain_clarity:
+          type: string
+        fibrin_present:
+          type: string
+        exit_color:
+          type: string
+        exit_sensitivity:
+          type: string
+        exit_condition:
+          type: string
+        bowel_obs:
+          type: string
+        treatment_problems:
+          type: string
+        comments:
+          type: string
