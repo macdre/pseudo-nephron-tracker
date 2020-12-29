@@ -18,3 +18,7 @@ run:
 .PHONY: follow
 follow:
 	docker logs -f flask-vue
+
+.PHONY: e2e-test
+e2e-test:
+	cd ./client/test && source ./test_creds.sh && pytest tests.py

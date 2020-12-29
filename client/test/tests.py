@@ -1,6 +1,7 @@
 import pytest
 import time
 import json
+import os
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
@@ -14,6 +15,8 @@ class TestBasicloginandrecordtreatment():
     self.driver = webdriver.Chrome()
     self.vars = {}
     self.wait = WebDriverWait(self.driver, 20)
+    self.test_email = os.environ['TEST_EMAIL']
+    self.test_pass = os.environ['TEST_PASS']
   
   def teardown_method(self, method):
     self.driver.quit()
@@ -26,8 +29,8 @@ class TestBasicloginandrecordtreatment():
 
     self.wait.until(EC.url_changes("http://localhost:8080/"))
     self.wait.until(EC.visibility_of_element_located((By.ID, "Web/Submit/Active")))
-    self.driver.find_element(By.ID, "1-email").send_keys("<insertEmailHere>")
-    self.driver.find_element(By.NAME, "password").send_keys("<insertPasswordHere>")
+    self.driver.find_element(By.ID, "1-email").send_keys(self.test_email)
+    self.driver.find_element(By.NAME, "password").send_keys(self.test_pass)
     self.driver.find_element(By.CSS_SELECTOR, ".auth0-label-submit").click()
 
     self.wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, ".fa-notes-medical")))
