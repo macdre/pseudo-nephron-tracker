@@ -1,13 +1,26 @@
 <template>
-  <b-container fluid fill-height class='px-0'>
+  <b-container id="axiosForm" fluid fill-height class='px-0'>
     <vc-layout v-resize="resize" class="align-center mx-0" spacing="8">
       <vc-col :span="24">
         <vc-card class="elevation-3">
           <card-title-nav title="Treatment"/>
+          <div class="Center-Container" v-if="loading">
+            <div class="Absolute-Center">
+              <self-building-square-spinner :animation-duration="6000" :size="100" color="#2196f3"/>
+            </div>
+          </div>
           <vc-card-text>
-            <b-form @submit="submitPatientVitals" @reset="onReset">
+            <div class="contact-form-success alert alert-success mt-4" v-if="success">
+              <strong>Success!</strong> Your treatment was recorded.
+            </div>
+
+            <div class="contact-form-error alert alert-danger mt-4" v-if="error">
+              <strong>Error!</strong> There was a problem saving your treatment record.
+            </div>
+
+            <b-form @submit.prevent="submitPatientVitals" @reset="onReset">
               <vc-layout v-resize="resize" class="align-center mx-0" spacing="8">
-                <vc-col :span="8" xs24 sm12 md6>
+                <vc-col :span="12" xs24 sm12 md6>
                   <h5>Vitals</h5>
                   <br/>
                   <b-form-group
@@ -23,7 +36,8 @@
                       id="entry_date"
                       v-model="entry_date"
                       reset-value="entry_date"
-                      v-if="!isReset"
+                      :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
+                      locale="en-CA"
                     ></b-form-datepicker>
                   </b-form-group>
 
@@ -55,7 +69,7 @@
                   </b-form-group>
                 </vc-col>
                 
-                <vc-col :span="8" xs24 sm12 md6>
+                <vc-col :span="12" xs24 sm12 md6>
                   <h5>Treatment Details</h5>
                   <br/>
                   <b-form-group
@@ -83,14 +97,14 @@
                     <!-- Hard code the locale to de as it gives us a 24 hour clock that is 0-based -->
                     <b-form-timepicker required id="average_dwell" v-model="average_dwell" locale="de"></b-form-timepicker>
                   </b-form-group>
-                  <b-form-row>
-                    <b-col><label>Added/Lost Dwell:</label></b-col>
-                    <b-col><b-form-select required id="added_lost_dwell_type" v-model="added_lost_dwell_type" :options="addedLostOptions"/></b-col>
-                    <b-col><b-form-timepicker required id="added_lost_dwell_value" v-model="added_lost_dwell_value" locale="de"/></b-col>
+                  <b-form-row class="justify-content-end">
+                    <b-col class="col-auto"><label class="Absolute-Center">Added/Lost Dwell:</label></b-col>
+                    <b-col class="col-auto"><b-form-select required id="added_lost_dwell_type" v-model="added_lost_dwell_type" :options="addedLostOptions"/></b-col>
+                    <b-col class="col-auto"><b-form-timepicker required id="added_lost_dwell_value" v-model="added_lost_dwell_value" locale="de"/></b-col>
                   </b-form-row>
                 </vc-col>
 
-                <vc-col :span="8" xs24 sm12 md6>
+                <vc-col :span="12" xs24 sm12 md6>
                   <h5>Drain Observations</h5>
                   <br/>
                   <b-form-group
@@ -119,7 +133,7 @@
                   </b-form-group>
                 </vc-col>
 
-                <vc-col :span="8" xs24 sm12 md6>
+                <vc-col :span="12" xs24 sm12 md6>
                   <h5>Exit and Tunnel Site Observations</h5>
                   <br/>
                   <b-form-group
@@ -148,7 +162,7 @@
                   </b-form-group>                  
                 </vc-col>
 
-                <vc-col :span="8" xs24 sm12 md6>
+                <vc-col :span="12" xs24 sm12 md6>
                   <h5>Misc. Observations</h5>
                   <br/>
                   <b-form-group
@@ -169,7 +183,7 @@
                   </b-form-group>                  
                 </vc-col>
                 
-                <vc-col :span="8" xs24 sm12 md6>
+                <vc-col :span="12" xs24 sm12 md6>
                   <h5>Notes/Comments</h5>
                   <br/>
                   <b-form-textarea
@@ -201,14 +215,19 @@
 import axios from "axios";
 import moment from "moment";
 import CardTitleNav from "../components/CardTitleNav";
+import { SelfBuildingSquareSpinner  } from 'epic-spinners';
 
 export default {
   components: {
-    CardTitleNav
+    CardTitleNav,
+    SelfBuildingSquareSpinner
   },
   name: "treatment",
   data() {
     return {
+      success: false,
+      error: false,
+      loading: false,
       entry_date: moment.utc(new Date()).local().format('YYYY-MM-DD'),
       systolic_pressure: "",
       diastolic_pressure: "",
@@ -312,24 +331,41 @@ export default {
           treatment_problems: this.treatment_problems,
           comments: this.comments
         };
-        //process.stdout.write(JSON.stringify(patient_vitals) + '\n');
+        
         console.log(JSON.stringify(patient_vitals));
 
         // Get the access token from the auth wrapper
         const token = await this.$auth.getTokenSilently();
+
+        this.loading = true;
+
         // Use Axios to make a call to the API
-        const { data } = await axios.post("/v1/patient_vitals", 
-          {
-            patient_vitals: patient_vitals
-          },
-          {
-            headers: {
-              // send the access token through the 'Authorization' header
-              Authorization: `Bearer ${token}`    
+        axios
+          .post("/v1/patient_vitals", 
+            {
+              patient_vitals: patient_vitals
+            },
+            {
+              headers: {
+                // send the access token through the 'Authorization' header
+                Authorization: `Bearer ${token}`    
+              }
             }
-          }
-        );
-        this.apiMessage = data;
+          )
+          .then(res => {
+            this.onReset(e);
+            this.success = true;
+            console.log(res);
+          })
+          .catch(error => {
+            this.error = true;
+            console.log(error);
+          })
+          .finally(() => {
+            this.loading = false;
+          });                      
+
+        //this.apiMessage = data;
       }
     },
     onReset(e) {
@@ -353,14 +389,45 @@ export default {
       this.bowel_obs = null
       this.treatment_problems = null
       this.comments = null
+
+      this.success = false
+      this.error = false
       // Trick to reset/clear native browser form validation state
       this.show = false
-      this.isReset = true
       this.$nextTick(() => {
         this.show = true
-        this.isReset = false
       })
     }
   }
 };
 </script>
+
+<style scoped>
+#axiosForm {
+  /* Components Root Element ID */
+  position: relative;
+}
+
+.Center-Container {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: #eceaea;
+  background-size: 50px;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 10000000;
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+
+.Absolute-Center {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+</style>

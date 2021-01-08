@@ -1,6 +1,6 @@
 <template>
   <div class="mb-3">
-    <b-navbar toggleable="md" type="dark" variant="primary">
+    <b-navbar toggleable="md" type="dark" variant="dark">
       <b-navbar-brand to="/">
         <img src="/logo.png" alt="logo" width=50>
         Pseudo-Nephron-Project
@@ -63,3 +63,9 @@
     }
   };
 </script>
+
+<style scoped>
+ .navbar.navbar-dark.bg-dark{
+    background-color: #2196f3!important;
+ }
+</style>

@@ -2,6 +2,7 @@ import pytest
 import time
 import json
 import os
+from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
@@ -17,6 +18,7 @@ class TestBasicloginandrecordtreatment():
     self.wait = WebDriverWait(self.driver, 20)
     self.test_email = os.environ['TEST_EMAIL']
     self.test_pass = os.environ['TEST_PASS']
+    self.current_date = datetime.today().strftime('%Y-%m-%d')
   
   def teardown_method(self, method):
     self.driver.quit()
@@ -40,7 +42,7 @@ class TestBasicloginandrecordtreatment():
     self.wait.until(EC.visibility_of_element_located((By.ID, "entry_date")))
     self.driver.find_element(By.ID, "entry_date").click()
 
-    self.driver.find_element(By.CSS_SELECTOR, "#\\__BVID__102__cell-2020-12-16_ > .btn").click()
+    self.driver.find_element(By.CSS_SELECTOR, "#\\__BVID__102__cell-" + self.current_date + "_ > .btn").click()
 
     self.driver.find_element(By.ID, "systolic_pressure").send_keys("8")
     

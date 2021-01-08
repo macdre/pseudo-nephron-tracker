@@ -5,7 +5,7 @@ import logging
 import os
 import json
 import connexion
-
+import time
 from flask import jsonify
 from flask_cors import CORS, cross_origin
 
@@ -35,10 +35,10 @@ def get_patient_vitals(user_id, quantity=1):
 @requires_auth
 def post_patient_vitals(body):
     print(body['patient_vitals'])
+    time.sleep(5)
     new_patient_vitals = PatientVitalsSchema().load(body['patient_vitals'], session=db.session)
     db.session.add(new_patient_vitals)
-    retVal2 = db.session.commit()
-    print("Second is " + retVal2)
+    db.session.commit()
 
     # We need to catch db errors and convert them into http return codes
     return '201'
