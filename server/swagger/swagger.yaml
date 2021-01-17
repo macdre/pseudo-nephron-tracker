@@ -83,6 +83,32 @@ paths:
           description: Updated
         '404':
           description: The data point does not exist for the specified user_id and date
+    delete:
+      operationId: app.delete_patient_vitals
+      summary: Deletes an existing patient_vitals data point.
+      parameters:
+        - name: user_id
+          in: query
+          required: true
+          description: The ID of the users datapoint to delete.
+          schema:
+            type: string
+        - name: entry_date
+          in: query
+          required: true
+          description: The date of the datapoint to delete
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Successful deletion
+        '400':
+          description: The specified user_id is invalid.
+        '404':
+          description: The specified user_id was not found.
+        default:
+          description: An unspecified error occurred
 
 components:
   schemas:

@@ -10,12 +10,12 @@
             </div>
           </div>
           <vc-card-text>
-            <div class="contact-form-success alert alert-success mt-4" v-if="success">
+            <div class="contact-form-success alert alert-success mt-4" id="success_message_container" v-if="success">
               <strong>Success!</strong> Your treatment was recorded.
             </div>
 
-            <div class="contact-form-error alert alert-danger mt-4" v-if="error">
-              <strong>Error!</strong> There was a problem saving your treatment record.
+            <div class="contact-form-error alert alert-danger mt-4" id="error_message_container" v-if="error">
+              <strong>Error!</strong> {{ error_message }}
             </div>
 
             <b-form @submit.prevent="submitPatientVitals" @reset="onReset">
@@ -228,6 +228,7 @@ export default {
       success: false,
       error: false,
       loading: false,
+      error_message: "",
       entry_date: moment.utc(new Date()).local().format('YYYY-MM-DD'),
       systolic_pressure: "",
       diastolic_pressure: "",
@@ -306,6 +307,7 @@ export default {
   methods: {
     async submitPatientVitals(e) {
       console.log("Hitting the submit button!!!!");
+      this.error = false;
       var sub_array = this.$auth.user.sub.split("|");
       if (sub_array.length == 2) {
         var user_id = sub_array[1];
@@ -360,16 +362,35 @@ export default {
           .catch(error => {
             this.error = true;
             console.log(error);
+            console.log(error.response.status);
+            if (error.response.status == 409) {
+              // Vital already exists for the given date
+              this.error_message = "An entry already exists for the specified date. Please check the date and try again.";
+            }
+            else if(error.response.status == 404) {
+              // User id is not enrolled
+              this.error_message = "You are not yet enrolled in the system. Please contact your system administrator for help.";
+            }
+            else if(error.response.status == 422) {
+              // Some formatting issue with variables
+              this.error_message = "There was a problem with your entry. Check your treatment record entries and try again.";
+            }
+            else if(error.response.status == 500) {
+              // Server error
+              this.error_message = "There was a system error. Wait a while and try again. If the error persists, contact your system administrator for help.";
+            }
+
           })
           .finally(() => {
             this.loading = false;
-          });                      
-
+          }
+        );                      
         //this.apiMessage = data;
       }
     },
     onReset(e) {
       e.preventDefault()
+      this.error_message = ""
       // Reset our form values
       this.entry_date = moment.utc(new Date()).local().format('YYYY-MM-DD')
       this.systolic_pressure = ""

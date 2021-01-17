@@ -52,3 +52,17 @@ class PatientVitalsSchema(SQLAlchemySchema):
     bowel_obs = auto_field()
     treatment_problems = auto_field()
     comments = auto_field()
+
+class EnrolledPatients(db.Model):
+    # Model for the enrolled_patients table
+    __tablename__ = 'enrolled_patients'
+    __table_args__ = {'quote':False}
+    user_id = db.Column('user_id', db.Text, primary_key=True)
+    enrolled_date = db.Column('enrolled_date', db.Date)
+
+class EnrolledPatientsSchema(SQLAlchemySchema):
+    class Meta:
+        model = EnrolledPatients
+        load_instance = True  # Optional: deserialize to model instances
+    user_id = auto_field()
+    enrolled_date = auto_field()
