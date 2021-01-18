@@ -3,7 +3,7 @@
     <vc-layout v-resize="resize" class="align-center mx-0" spacing="8">
       <vc-col :span="24">
         <vc-card class="elevation-3">
-          <card-title-nav title="Explore Metrics"/>
+          <card-title-nav title="Metrics Graphs"/>
           <vc-card-text>
             <b-row class="my-1">
               <b-col :span="24">
@@ -32,7 +32,7 @@ export default {
   components: {
     CardTitleNav
   },
-  name: "metrics",
+  name: "metrics-graph",
   data() {
     return {
       perPage: 10,

@@ -37,7 +37,7 @@ export default {
       cards: [
         { id: 1, routerLink: "/treatment", iconName: "fa-notes-medical", cardTitle: "Record Treatment" },
         { id: 2, routerLink: "/inventory", iconName: "fa-boxes", cardTitle: "Manage Inventory" },
-        { id: 3, routerLink: "/metrics", iconName: "fa-chart-bar", cardTitle: "Explore Metrics" },
+        { id: 3, routerLink: "/metrics-menu", iconName: "fa-chart-bar", cardTitle: "Explore Metrics" },
         { id: 4, routerLink: "/setup", iconName: "fa-cogs", cardTitle: "Configure Templates" },
         { id: 5, routerLink: "/medications", iconName: "fa-prescription-bottle", cardTitle: "Manage Medications" }
       ]

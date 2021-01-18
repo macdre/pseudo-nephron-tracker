@@ -5,7 +5,7 @@ import { IconsPlugin, BootstrapVue } from 'bootstrap-vue';
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faLink, faUser, faPowerOff, faNotesMedical, faBoxes, faChartBar, 
-  faPrescriptionBottle, faCogs, faHome, faArrowLeft } 
+  faPrescriptionBottle, faCogs, faHome, faArrowLeft, faTable, faChartArea} 
   from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { dom } from '@fortawesome/fontawesome-svg-core'
@@ -41,7 +41,8 @@ Vue.use(Auth0Plugin, {
 Vue.directive('highlightjs', HighlightJs);
 
 library.add(faLink, faUser, faPowerOff, faNotesMedical, faBoxes, 
-  faChartBar, faPrescriptionBottle, faCogs, faHome, faArrowLeft);
+  faChartBar, faPrescriptionBottle, faCogs, faHome, faArrowLeft,
+  faTable, faChartArea);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 dom.watch();
 
