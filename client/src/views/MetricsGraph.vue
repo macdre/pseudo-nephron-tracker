@@ -7,6 +7,9 @@
           <vc-card-text>
             <b-row class="my-1">
               <b-col :span="24">
+
+                <line-chart v-bind:data="graph_data" :key="graph_data.time"/>
+
                 <b-table
                   id="my-table" :items="metricItems" :fields="metricsFields" 
                   :per-page="perPage" :current-page="currentPage" small>
@@ -27,10 +30,12 @@
 <script>
 import axios from "axios";
 import CardTitleNav from "../components/CardTitleNav";
+import LineChart from "../components/LineChart";
 
 export default {
   components: {
-    CardTitleNav
+    CardTitleNav,
+    LineChart
   },
   name: "metrics-graph",
   data() {
@@ -39,7 +44,11 @@ export default {
       currentPage: 1,
       metricItems: "",
       metricsFields: ['entry_date', 'systolic_pressure', 'diastolic_pressure', 'weight_in_kg', 'initial_drain'],
-      quantity: 9999
+      quantity: 9999,
+      graph_data: {
+        time: "",
+        value: ""
+      }
     };
   },
   computed: {
@@ -66,6 +75,8 @@ export default {
           }
         });
         this.metricItems = data;
+        this.graph_data.time = data.map(d => d.entry_date);
+        this.graph_data.value = data.map(d => d.weight_in_kg);
       }
     }
   },
