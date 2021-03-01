@@ -8,11 +8,18 @@
             <b-row class="my-1">
               <b-col :span="24">
                 <b-table
-                  id="my-table" :items="metricItems" :fields="metricsFields" 
-                  :per-page="perPage" :current-page="currentPage" small>
+                  id="my-table" :items="metric_items" :fields="metrics_fields" 
+                  :per-page="per_page" :current-page="current_page" small
+                  :busy="is_busy">
+                  <template #table-busy>
+                    <div class="text-center text-danger my-2">
+                      <self-building-square-spinner class="align-middle" :animation-duration="6000" :size="50" color="#2196f3"/>
+                      <strong>Loading...</strong>
+                    </div>
+                  </template>
                 </b-table>
                 <b-pagination
-                  v-model="currentPage" :total-rows="rows" :per-page="perPage" 
+                  v-model="current_page" :total-rows="rows" :per-page="per_page" 
                   aria-controls="my-table" align="center">
                 </b-pagination>
               </b-col>
@@ -27,28 +34,32 @@
 <script>
 import axios from "axios";
 import CardTitleNav from "../components/CardTitleNav";
+import { SelfBuildingSquareSpinner  } from 'epic-spinners';
 
 export default {
   components: {
-    CardTitleNav
+    CardTitleNav,
+    SelfBuildingSquareSpinner
   },
   name: "metrics-table",
   data() {
     return {
-      perPage: 10,
-      currentPage: 1,
-      metricItems: "",
-      metricsFields: ['entry_date', 'systolic_pressure', 'diastolic_pressure', 'weight_in_kg', 'initial_drain'],
+      is_busy: true,
+      per_page: 10,
+      current_page: 1,
+      metric_items: "",
+      metrics_fields: ['entry_date', 'systolic_pressure', 'diastolic_pressure', 'weight_in_kg', 'initial_drain'],
       quantity: 9999
     };
   },
   computed: {
     rows() {
-      return this.metricItems.length
+      return this.metric_items.length
     }
   },
   methods: {
     async getPatientVitals() {
+      this.is_busy = true;
       var sub_array = this.$auth.user.sub.split("|");
       if (sub_array.length == 2) {
         var user_id = sub_array[1];
@@ -65,7 +76,8 @@ export default {
             quantity: this.quantity
           }
         });
-        this.metricItems = data;
+        this.metric_items = data;
+        this.is_busy = false;
       }
     }
   },

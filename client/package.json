@@ -23,6 +23,7 @@
     "@mdi/font": "^5.9.55",
     "moment": "2.29.1",
     "vue": "^2.6.12",
+    "vue-d3-charts": "^0.2.8",
     "vue-router": "^3.4.9",
     "vuecidity": "^1.0.7"
   },

@@ -27,13 +27,14 @@ export default {
       type: Number,
     },
     height: {
-      height: 270,
+      default: 270,
       type: Number,
     }
   },
   data() {
     return {
       padding: 60,
+      line: ""
     };
   },
   computed: {
@@ -46,7 +47,6 @@ export default {
       return [0, height];
     },
     path() {
-      console.log("GOTHERE!!!"); 
       console.log(JSON.stringify(this.data));
       const x = d3.scaleLinear().range(this.rangeX);
       const y = d3.scaleLinear().range(this.rangeY);
@@ -54,13 +54,13 @@ export default {
       d3.axisTop().scale(y);
       x.domain(d3.extent(this.data, d => d.time));
       y.domain([0, d3.max(this.data, d => d.value)]);
-      return d3.line()
+      this.line = d3.line()
         .x(d => x(d.time))
         .y(d => y(d.value));
     },
-    line() {
-      return this.path(this.data);
-    },
+    // line() {
+    //   this.line = this.path(this.data);
+    // },
     viewBox() {
       return `0 0 ${this.width} ${this.height}`;
     }

@@ -7,17 +7,7 @@
           <vc-card-text>
             <b-row class="my-1">
               <b-col :span="24">
-
-                <line-chart v-bind:data="graph_data" :key="graph_data.time"/>
-
-                <b-table
-                  id="my-table" :items="metricItems" :fields="metricsFields" 
-                  :per-page="perPage" :current-page="currentPage" small>
-                </b-table>
-                <b-pagination
-                  v-model="currentPage" :total-rows="rows" :per-page="perPage" 
-                  aria-controls="my-table" align="center">
-                </b-pagination>
+                <D3LineChart :config="chart_config" :datum="metric_items" :key="metric_items"></D3LineChart>
               </b-col>
             </b-row>
           </vc-card-text>
@@ -30,30 +20,33 @@
 <script>
 import axios from "axios";
 import CardTitleNav from "../components/CardTitleNav";
-import LineChart from "../components/LineChart";
+import { D3LineChart } from 'vue-d3-charts';
 
 export default {
   components: {
     CardTitleNav,
-    LineChart
+    D3LineChart
   },
   name: "metrics-graph",
   data() {
     return {
-      perPage: 10,
-      currentPage: 1,
-      metricItems: "",
-      metricsFields: ['entry_date', 'systolic_pressure', 'diastolic_pressure', 'weight_in_kg', 'initial_drain'],
       quantity: 9999,
-      graph_data: {
-        time: "",
-        value: ""
-      }
+      chart_config: {
+        date: {
+          key: "entry_date"
+        },
+        values: ["entry_date", "systolic_pressure", "diastolic_pressure", "weight_in_kg", "initial_drain"],
+        axis: {
+          yTitle: "Thingers",
+          xTitle: "Thangers"
+        }
+      },
+      metric_items: []
     };
   },
   computed: {
     rows() {
-      return this.metricItems.length
+      return this.metric_items.length
     }
   },
   methods: {
@@ -74,9 +67,7 @@ export default {
             quantity: this.quantity
           }
         });
-        this.metricItems = data;
-        this.graph_data.time = data.map(d => d.entry_date);
-        this.graph_data.value = data.map(d => d.weight_in_kg);
+        this.metric_items = data;
       }
     }
   },
