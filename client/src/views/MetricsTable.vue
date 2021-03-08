@@ -5,6 +5,62 @@
         <vc-card class="elevation-3">
           <card-title-nav title="Metrics Tables"/>
           <vc-card-text>
+
+            <b-row class="my-1">
+              <b-col :span="24">
+                <b-card no-body class="mb-1">
+                  <b-card-header header-tag="header" class="p-1" role="tab">
+                    <b-button class="btn-accordion" block v-b-toggle.accordion-1>Configure Displayed Field</b-button>
+                  </b-card-header>
+                  <b-collapse id="accordion-1" accordion="my-accordion" role="tabpanel">
+                    <b-card-body>
+                      <b-row>
+                        <b-col cols="5">
+                          <b-list-group style="max-height: 300px; overflow:scroll; -webkit-overflow-scrolling: touch;">
+                            <b-list-group-item button>Button item</b-list-group-item>
+                            <b-list-group-item button>I am a button</b-list-group-item>                            
+                            <b-list-group-item button>This is a button too</b-list-group-item>
+                            <b-list-group-item button>This is a button too</b-list-group-item>
+                            <b-list-group-item button>This is a button too</b-list-group-item>
+                            <b-list-group-item button>This is a button too</b-list-group-item>
+                            <b-list-group-item button>This is a button too</b-list-group-item>
+                            <b-list-group-item button>This is a button too</b-list-group-item>
+                            <b-list-group-item button>This is a button too</b-list-group-item>
+                            <b-list-group-item button>This is a button too</b-list-group-item>
+                            <b-list-group-item button>This is a button too</b-list-group-item>
+                            <b-list-group-item button>This is a button too</b-list-group-item>
+                            <b-list-group-item button>This is a button too</b-list-group-item>
+                          </b-list-group>
+                        </b-col>
+
+                        <b-col class="text-center" align-v="center" cols="2">
+                          <b-row>
+                            <b-button>Add</b-button>
+                          </b-row>
+                          <b-row>
+                            <b-button>Remove</b-button>
+                          </b-row>
+                          <b-row>
+                            <b-button>Reset</b-button>
+                          </b-row>
+                        </b-col>
+                        
+                        <b-col cols="5">
+                          <b-list-group>
+                            <b-list-group-item button>Button item</b-list-group-item>
+                            <b-list-group-item button>I am a button</b-list-group-item>
+                            <b-list-group-item button disabled>Disabled button</b-list-group-item>
+                            <b-list-group-item button>This is a button too</b-list-group-item>
+                          </b-list-group>
+                        </b-col>
+                      </b-row>
+
+                    </b-card-body>
+                  </b-collapse>
+                </b-card>
+              </b-col>
+            </b-row>
+
             <b-row class="my-1">
               <b-col :span="24">
                 <b-table
@@ -86,3 +142,53 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+
+.btn-accordion { 
+  color: #ffffff; 
+  background-color: #2196F3; 
+  border-color: #2196F3; 
+} 
+ 
+.btn-accordion:hover, 
+.btn-accordion:focus, 
+.btn-accordion:active, 
+.btn-accordion.active, 
+.open .dropdown-toggle.btn-accordion { 
+  color: #ffffff; 
+  background-color: #2196F3; 
+  border-color: #2196F3; 
+} 
+ 
+.btn-accordion:active, 
+.btn-accordion.active, 
+.open .dropdown-toggle.btn-accordion { 
+  background-image: none; 
+} 
+ 
+.btn-accordion.disabled, 
+.btn-accordion[disabled], 
+fieldset[disabled] .btn-accordion, 
+.btn-accordion.disabled:hover, 
+.btn-accordion[disabled]:hover, 
+fieldset[disabled] .btn-accordion:hover, 
+.btn-accordion.disabled:focus, 
+.btn-accordion[disabled]:focus, 
+fieldset[disabled] .btn-accordion:focus, 
+.btn-accordion.disabled:active, 
+.btn-accordion[disabled]:active, 
+fieldset[disabled] .btn-accordion:active, 
+.btn-accordion.disabled.active, 
+.btn-accordion[disabled].active, 
+fieldset[disabled] .btn-accordion.active { 
+  background-color: #2196F3; 
+  border-color: #2196F3; 
+} 
+ 
+.btn-accordion .badge { 
+  color: #2196F3; 
+  background-color: #ffffff; 
+}
+
+</style>
