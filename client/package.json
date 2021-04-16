@@ -16,7 +16,7 @@
     "@fortawesome/vue-fontawesome": "^2.0.2",
     "axios": "^0.21.1",
     "bootstrap-vue": "^2.21.2",
-    "d3": "^6.6.0",
+    "d3": "^6.6.2",
     "epic-spinners": "^1.1.0",
     "highlight.js": "^10.7.1",
     "jquery": "^3.6.0",
