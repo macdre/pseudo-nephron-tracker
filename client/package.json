@@ -31,7 +31,7 @@
     "@babel/core": "^7.14.0",
     "@babel/preset-env": "^7.14.0",
     "@babel/plugin-proposal-function-bind": "^7.12.13",
-    "@vue/babel-preset-app": "^4.5.12",
+    "@vue/babel-preset-app": "^4.5.13",
     "@vue/cli": "^4.5.13",
     "@vue/cli-plugin-babel": "^4.5.13",
     "@vue/cli-service": "^4.5.13",
