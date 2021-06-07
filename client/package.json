@@ -22,7 +22,7 @@
     "jquery": "^3.6.0",
     "@mdi/font": "^5.9.55",
     "moment": "2.29.1",
-    "vue": "^2.6.12",
+    "vue": "^2.6.13",
     "vue-d3-charts": "^0.2.8",
     "vue-router": "^3.5.1",
     "vuecidity": "^1.0.7"
@@ -35,7 +35,7 @@
     "@vue/cli": "^4.5.13",
     "@vue/cli-plugin-babel": "^4.5.13",
     "@vue/cli-service": "^4.5.13",
-    "vue-template-compiler": "^2.6.12",
+    "vue-template-compiler": "^2.6.13",
     "node-sass": "^6.0.0",
     "sass-loader": "^10.1.1",
     "webpack": "^4.44.2"
