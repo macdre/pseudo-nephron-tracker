@@ -14,7 +14,7 @@
                   </b-card-header>
                   <b-collapse id="accordion-1" accordion="my-accordion" role="tabpanel">
                     <b-card-body>
-                      <b-row>
+                      <b-row align-v="center">
                         <b-col cols="5">
                           <b-list-group style="max-height: 300px; overflow:scroll; -webkit-overflow-scrolling: touch;">
                             <b-list-group-item button>Button item</b-list-group-item>
@@ -33,15 +33,15 @@
                           </b-list-group>
                         </b-col>
 
-                        <b-col class="text-center" align-v="center" cols="2">
-                          <b-row>
-                            <b-button>Add</b-button>
+                        <b-col cols="2">
+                          <b-row class="mb-2" align-h="center">
+                            <b-button variant="primary">Add</b-button>
                           </b-row>
-                          <b-row>
-                            <b-button>Remove</b-button>
+                          <b-row class="mb-2" align-h="center">
+                            <b-button variant="primary">Remove</b-button>
                           </b-row>
-                          <b-row>
-                            <b-button>Reset</b-button>
+                          <b-row class="mb-2" align-h="center">
+                            <b-button variant="primary">Reset</b-button>
                           </b-row>
                         </b-col>
                         
@@ -64,7 +64,7 @@
             <b-row class="my-1">
               <b-col :span="24">
                 <b-table
-                  id="my-table" :items="metric_items" :fields="metrics_fields" 
+                  id="my-table" :items="metric_items" :fields="displayed_metrics_fields" 
                   :per-page="per_page" :current-page="current_page" small
                   :busy="is_busy">
                   <template #table-busy>
@@ -104,7 +104,10 @@ export default {
       per_page: 10,
       current_page: 1,
       metric_items: "",
-      metrics_fields: ['entry_date', 'systolic_pressure', 'diastolic_pressure', 'weight_in_kg', 'initial_drain'],
+      all_metrics_fields: ['entry_date', 'user_id', 'entry_date', 'systolic_pressure', 'diastolic_pressure', 'weight_in_kg', 'initial_drain', 'total_uf', 'average_dwell', 'added_lost_dwell_type', 'added_lost_dwell_value', 'drain_color', 'drain_clarity', 'fibrin_present', 'exit_color', 'exit_sensitivity', 'exit_condition', 'bowel_obs', 'treatment_problems', 'comments'],
+      default_metrics_fields: ['entry_date', 'systolic_pressure', 'diastolic_pressure', 'weight_in_kg', 'initial_drain'],
+      displayed_metrics_fields: [''],
+      available_metrics_fields: [''],
       quantity: 9999
     };
   },
@@ -133,11 +136,19 @@ export default {
           }
         });
         this.metric_items = data;
+
+
+
+
         this.is_busy = false;
       }
+    },
+    resetDisplayedMetrics() {
     }
   },
   beforeMount(){
+    this.displayed_metrics_fields = this.default_metrics_fields;
+    this.available_metrics_fields = this.all_metrics_fields.filter(x => this.displayed_metrics_fields);
     this.getPatientVitals()
   },
 };
