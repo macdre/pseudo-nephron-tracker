@@ -10,7 +10,7 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "@auth0/auth0-spa-js": "^1.15.0",
+    "@auth0/auth0-spa-js": "^1.16.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/vue-fontawesome": "^2.0.2",
@@ -19,7 +19,7 @@
     "bootstrap-vue": "^2.21.2",
     "d3": "^6.7.0",
     "epic-spinners": "^1.1.0",
-    "highlight.js": "^10.7.2",
+    "highlight.js": "^11.0.1",
     "jquery": "^3.6.0",
     "moment": "2.29.1",
     "vue": "^2.6.12",
