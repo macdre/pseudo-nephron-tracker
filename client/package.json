@@ -24,7 +24,7 @@
     "moment": "2.29.1",
     "vue": "^2.6.14",
     "vue-d3-charts": "^0.2.8",
-    "vue-router": "^3.5.1",
+    "vue-router": "^3.5.2",
     "vuecidity": "^1.0.7"
   },
   "devDependencies": {
