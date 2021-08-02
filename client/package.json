@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.14.8",
-    "@babel/preset-env": "^7.14.8",
+    "@babel/preset-env": "^7.14.9",
     "@babel/plugin-proposal-function-bind": "^7.14.5",
     "@vue/babel-preset-app": "^4.5.13",
     "@vue/cli": "^4.5.13",
