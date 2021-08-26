@@ -17,7 +17,7 @@
     "@mdi/font": "^5.9.55",
     "axios": "^0.21.1",
     "bootstrap-vue": "^2.21.2",
-    "d3": "^7.0.0",
+    "d3": "^7.0.1",
     "epic-spinners": "^1.1.0",
     "highlight.js": "^11.2.0",
     "jquery": "^3.6.0",
@@ -28,7 +28,7 @@
     "vuecidity": "^1.0.7"
   },
   "devDependencies": {
-    "@babel/core": "^7.14.8",
+    "@babel/core": "^7.15.0",
     "@babel/preset-env": "^7.14.8",
     "@babel/plugin-proposal-function-bind": "^7.14.5",
     "@vue/babel-preset-app": "^4.5.13",
