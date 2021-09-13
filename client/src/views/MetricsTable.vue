@@ -17,40 +17,25 @@
                       <b-row align-v="center">
                         <b-col cols="5">
                           <b-list-group style="max-height: 300px; overflow:scroll; -webkit-overflow-scrolling: touch;">
-                            <b-list-group-item button>Button item</b-list-group-item>
-                            <b-list-group-item button>I am a button</b-list-group-item>                            
-                            <b-list-group-item button>This is a button too</b-list-group-item>
-                            <b-list-group-item button>This is a button too</b-list-group-item>
-                            <b-list-group-item button>This is a button too</b-list-group-item>
-                            <b-list-group-item button>This is a button too</b-list-group-item>
-                            <b-list-group-item button>This is a button too</b-list-group-item>
-                            <b-list-group-item button>This is a button too</b-list-group-item>
-                            <b-list-group-item button>This is a button too</b-list-group-item>
-                            <b-list-group-item button>This is a button too</b-list-group-item>
-                            <b-list-group-item button>This is a button too</b-list-group-item>
-                            <b-list-group-item button>This is a button too</b-list-group-item>
-                            <b-list-group-item button>This is a button too</b-list-group-item>
+                            <b-list-group-item button v-for="field in available_metrics_fields" v-bind:key="field" @click="setSelectedAvail(field, $event)">{{ field }}</b-list-group-item>
                           </b-list-group>
                         </b-col>
 
                         <b-col cols="2">
                           <b-row class="mb-2" align-h="center">
-                            <b-button variant="primary">Add</b-button>
+                            <b-button @click="addField" variant="primary">Add</b-button>
                           </b-row>
                           <b-row class="mb-2" align-h="center">
-                            <b-button variant="primary">Remove</b-button>
+                            <b-button @click="removeField" variant="primary">Remove</b-button>
                           </b-row>
                           <b-row class="mb-2" align-h="center">
-                            <b-button variant="primary">Reset</b-button>
+                            <b-button @click="resetFields" variant="primary">Reset</b-button>
                           </b-row>
                         </b-col>
                         
                         <b-col cols="5">
                           <b-list-group>
-                            <b-list-group-item button>Button item</b-list-group-item>
-                            <b-list-group-item button>I am a button</b-list-group-item>
-                            <b-list-group-item button disabled>Disabled button</b-list-group-item>
-                            <b-list-group-item button>This is a button too</b-list-group-item>
+                            <b-list-group-item button v-for="field in displayed_metrics_fields" v-bind:key="field" @click="setSelectedDisp(field)">{{ field }}</b-list-group-item>
                           </b-list-group>
                         </b-col>
                       </b-row>
@@ -103,11 +88,13 @@ export default {
       is_busy: true,
       per_page: 10,
       current_page: 1,
-      metric_items: "",
+      metric_items: '',
       all_metrics_fields: ['entry_date', 'user_id', 'entry_date', 'systolic_pressure', 'diastolic_pressure', 'weight_in_kg', 'initial_drain', 'total_uf', 'average_dwell', 'added_lost_dwell_type', 'added_lost_dwell_value', 'drain_color', 'drain_clarity', 'fibrin_present', 'exit_color', 'exit_sensitivity', 'exit_condition', 'bowel_obs', 'treatment_problems', 'comments'],
       default_metrics_fields: ['entry_date', 'systolic_pressure', 'diastolic_pressure', 'weight_in_kg', 'initial_drain'],
-      displayed_metrics_fields: [''],
-      available_metrics_fields: [''],
+      displayed_metrics_fields: [],
+      available_metrics_fields: [],
+      selected_field_available: '',
+      selected_field_displayed: '',
       quantity: 9999
     };
   },
@@ -117,6 +104,46 @@ export default {
     }
   },
   methods: {
+    setSelectedAvail(field, e) {
+      const el = e.target;
+      var current = document.querySelector('.active');
+      if (current) {
+          current.classList.remove('active');
+      }
+      el.classList.add('active');
+      this.selected_field_available = field;
+    },
+    setSelectedDisp(field) {
+      this.selected_field_displayed = field;
+    },
+    addField() {
+      if (this.selected_field_available) {
+        this.displayed_metrics_fields.push(this.selected_field_available);
+        this.available_metrics_fields.splice(this.available_metrics_fields.indexOf(this.selected_field_available), 1);
+        this.selected_field_available = '';
+        this.getPatientVitals();
+      }
+    },
+    removeField() {
+      if (this.selected_field_displayed) {
+        this.available_metrics_fields.push(this.selected_field_displayed);
+        this.displayed_metrics_fields.splice(this.displayed_metrics_fields.indexOf(this.selected_field_displayed), 1);
+        this.selected_field_displayed = '';
+        this.getPatientVitals();
+      }
+    },
+    resetFields() {
+      this.displayed_metrics_fields = this.default_metrics_fields;
+      this.available_metrics_fields = [];
+      for (let i=0; i<this.all_metrics_fields.length; i++) {
+        if (this.displayed_metrics_fields.includes(this.all_metrics_fields[i]) == false) {
+          this.available_metrics_fields.push(this.all_metrics_fields[i]);
+        }
+      }
+      this.selected_field_available = '';
+      this.selected_field_displayed = '';
+      this.getPatientVitals();
+    },
     async getPatientVitals() {
       this.is_busy = true;
       var sub_array = this.$auth.user.sub.split("|");
@@ -136,21 +163,20 @@ export default {
           }
         });
         this.metric_items = data;
-
-
-
-
         this.is_busy = false;
       }
     },
-    resetDisplayedMetrics() {
-    }
   },
   beforeMount(){
     this.displayed_metrics_fields = this.default_metrics_fields;
-    this.available_metrics_fields = this.all_metrics_fields.filter(x => this.displayed_metrics_fields);
-    this.getPatientVitals()
-  },
+    this.available_metrics_fields = [];
+    for (let i=0; i<this.all_metrics_fields.length; i++) {
+      if (this.displayed_metrics_fields.includes(this.all_metrics_fields[i]) == false) {
+        this.available_metrics_fields.push(this.all_metrics_fields[i]);
+      }
+    }
+    this.getPatientVitals();
+  }
 };
 </script>
 
