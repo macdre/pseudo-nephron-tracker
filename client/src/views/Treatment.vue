@@ -1,6 +1,6 @@
 <template>
   <b-container id="axiosForm" fluid fill-height class='px-0'>
-    <vc-layout v-resize="resize" class="align-center mx-0" spacing="8">
+    <vc-layout class="align-center mx-0" spacing="8">
       <vc-col :span="24">
         <vc-card class="elevation-3">
           <card-title-nav title="Treatment"/>
@@ -19,7 +19,7 @@
             </div>
 
             <b-form @submit.prevent="submitPatientVitals" @reset="onReset">
-              <vc-layout v-resize="resize" class="align-center mx-0" spacing="8">
+              <vc-layout class="align-center mx-0" spacing="8">
                 <vc-col :span="12" xs24 sm12 md6>
                   <h5>Vitals</h5>
                   <br/>
@@ -196,7 +196,7 @@
                 </vc-col>
               </vc-layout>
 
-              <vc-layout v-resize="resize" class="align-center mx-0" spacing="8">
+              <vc-layout class="align-center mx-0" spacing="8">
                 <vc-col :span="24">
                   <b-button class="mr-2" type="submit" variant="primary">Submit</b-button>
                   <b-button class="mr-2" type="reset" variant="danger">Reset</b-button>

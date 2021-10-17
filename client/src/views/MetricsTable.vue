@@ -1,47 +1,50 @@
 <template>
   <b-container fluid fill-height class='px-0'>
-    <vc-layout v-resize="resize" class="align-center mx-0" spacing="8">
+    <vc-layout class="align-center mx-0" spacing="8">
       <vc-col :span="24">
         <vc-card class="elevation-3">
           <card-title-nav title="Metrics Tables"/>
-          <vc-card-text>
+          <vc-card-text class="pa-2">
 
             <b-row class="my-1">
               <b-col :span="24">
-                <b-card no-body class="mb-1">
-                  <b-card-header header-tag="header" class="p-1" role="tab">
-                    <b-button class="btn-accordion" block v-b-toggle.accordion-1>Configure Displayed Field</b-button>
-                  </b-card-header>
-                  <b-collapse id="accordion-1" accordion="my-accordion" role="tabpanel">
-                    <b-card-body>
-                      <b-row align-v="center">
-                        <b-col cols="5">
-                          <b-list-group style="max-height: 300px; overflow:scroll; -webkit-overflow-scrolling: touch;">
-                            <b-list-group-item button v-for="field in available_metrics_fields" v-bind:key="field" @click="setSelectedAvail(field, $event)">{{ field }}</b-list-group-item>
-                          </b-list-group>
-                        </b-col>
+                <field-selector 
+                  v-bind:all_fields="all_metrics_fields"
+                  v-bind:default_fields="default_metrics_fields"
+                  v-bind:displayed_fields="displayed_metrics_fields"
+                  @listUpdate="updateList"
+                />
+              </b-col>
+            </b-row>
 
-                        <b-col cols="2">
-                          <b-row class="mb-2" align-h="center">
-                            <b-button @click="addField" variant="primary">Add</b-button>
-                          </b-row>
-                          <b-row class="mb-2" align-h="center">
-                            <b-button @click="removeField" variant="primary">Remove</b-button>
-                          </b-row>
-                          <b-row class="mb-2" align-h="center">
-                            <b-button @click="resetFields" variant="primary">Reset</b-button>
-                          </b-row>
-                        </b-col>
-                        
-                        <b-col cols="5">
-                          <b-list-group>
-                            <b-list-group-item button v-for="field in displayed_metrics_fields" v-bind:key="field" @click="setSelectedDisp(field)">{{ field }}</b-list-group-item>
-                          </b-list-group>
-                        </b-col>
-                      </b-row>
+            <b-row class="my-1">
+              <b-col cols="3">
+                <b-card no-body class="mb-1 cmd-btn">
+                  <b-button class="btn w-100" @click="print" variant="primary">
+                    Print <font-awesome-icon icon="print"/>
+                  </b-button>
+                </b-card>
+              </b-col>
 
-                    </b-card-body>
-                  </b-collapse>
+              <b-col cols="6"></b-col>
+
+              <b-col cols="3">
+                <b-card no-body class="mb-1 cmd-btn">
+                  <b-button class="btn w-100" @click="doExport" variant="primary">
+                    Export Raw Data <font-awesome-icon icon="file-download"/>
+                  </b-button>
+                  <vue-blob-json-csv
+                    @success="handleSuccess"
+                    @error="handleError"
+                    tag-name="div"
+                    file-type="csv"
+                    file-name="metric_items"
+                    title="Download"
+                    :data="metric_items"
+                    confirm="Are you sure you want to download the metrics?"
+                    hidden
+                    ref="export"
+                  >
                 </b-card>
               </b-col>
             </b-row>
@@ -53,10 +56,15 @@
                   :per-page="per_page" :current-page="current_page" small
                   :busy="is_busy">
                   <template #table-busy>
-                    <div class="text-center text-danger my-2">
-                      <self-building-square-spinner class="align-middle" :animation-duration="6000" :size="50" color="#2196f3"/>
-                      <strong>Loading...</strong>
-                    </div>
+                    <b-row align-v="center">
+                        <b-col cols="12">
+                          <b-row class="mb-2" align-h="center">
+                            <div class="text-danger">
+                              <self-building-square-spinner :animation-duration="6000" :size="50" color="#2196f3"/>
+                              <strong>Loading...</strong>
+                            </div>
+                          </b-row>
+                        </b-col>
                   </template>
                 </b-table>
                 <b-pagination
@@ -65,6 +73,15 @@
                 </b-pagination>
               </b-col>
             </b-row>
+
+            <div v-show="seen" id="printMe">
+              <b-row class="my-1">
+                <b-col :span="24">
+                  <b-table id="my-table-2" :items="metric_items" :fields="displayed_metrics_fields" small/>
+                </b-col>
+              </b-row>
+            </div>
+
           </vc-card-text>
         </vc-card>
       </vc-col>
@@ -76,11 +93,13 @@
 import axios from "axios";
 import CardTitleNav from "../components/CardTitleNav";
 import { SelfBuildingSquareSpinner  } from 'epic-spinners';
+import FieldSelector from "../components/FieldSelector";
 
 export default {
   components: {
     CardTitleNav,
-    SelfBuildingSquareSpinner
+    SelfBuildingSquareSpinner,
+    FieldSelector
   },
   name: "metrics-table",
   data() {
@@ -89,13 +108,14 @@ export default {
       per_page: 10,
       current_page: 1,
       metric_items: '',
-      all_metrics_fields: ['entry_date', 'user_id', 'entry_date', 'systolic_pressure', 'diastolic_pressure', 'weight_in_kg', 'initial_drain', 'total_uf', 'average_dwell', 'added_lost_dwell_type', 'added_lost_dwell_value', 'drain_color', 'drain_clarity', 'fibrin_present', 'exit_color', 'exit_sensitivity', 'exit_condition', 'bowel_obs', 'treatment_problems', 'comments'],
+      all_metrics_fields: ['entry_date', 'user_id', 'entry_date', 'systolic_pressure', 'diastolic_pressure', 'weight_in_kg', 
+        'initial_drain', 'total_uf', 'average_dwell', 'added_lost_dwell_type', 'added_lost_dwell_value', 'drain_color', 
+        'drain_clarity', 'fibrin_present', 'exit_color', 'exit_sensitivity', 'exit_condition', 'bowel_obs', 'treatment_problems', 
+        'comments'],
       default_metrics_fields: ['entry_date', 'systolic_pressure', 'diastolic_pressure', 'weight_in_kg', 'initial_drain'],
       displayed_metrics_fields: [],
-      available_metrics_fields: [],
-      selected_field_available: '',
-      selected_field_displayed: '',
-      quantity: 9999
+      quantity: 9999,
+      seen: false
     };
   },
   computed: {
@@ -104,45 +124,30 @@ export default {
     }
   },
   methods: {
-    setSelectedAvail(field, e) {
-      const el = e.target;
-      var current = document.querySelector('.active');
-      if (current) {
-          current.classList.remove('active');
-      }
-      el.classList.add('active');
-      this.selected_field_available = field;
+    updateList(updatedList) {
+      this.displayed_metrics_fields = updatedList;
     },
-    setSelectedDisp(field) {
-      this.selected_field_displayed = field;
+    doExport() {
+      this.$refs.export.handleDownload();
     },
-    addField() {
-      if (this.selected_field_available) {
-        this.displayed_metrics_fields.push(this.selected_field_available);
-        this.available_metrics_fields.splice(this.available_metrics_fields.indexOf(this.selected_field_available), 1);
-        this.selected_field_available = '';
-        this.getPatientVitals();
-      }
-    },
-    removeField() {
-      if (this.selected_field_displayed) {
-        this.available_metrics_fields.push(this.selected_field_displayed);
-        this.displayed_metrics_fields.splice(this.displayed_metrics_fields.indexOf(this.selected_field_displayed), 1);
-        this.selected_field_displayed = '';
-        this.getPatientVitals();
-      }
-    },
-    resetFields() {
-      this.displayed_metrics_fields = this.default_metrics_fields;
-      this.available_metrics_fields = [];
-      for (let i=0; i<this.all_metrics_fields.length; i++) {
-        if (this.displayed_metrics_fields.includes(this.all_metrics_fields[i]) == false) {
-          this.available_metrics_fields.push(this.all_metrics_fields[i]);
-        }
-      }
-      this.selected_field_available = '';
-      this.selected_field_displayed = '';
-      this.getPatientVitals();
+    async print () {
+      const vueHtmlToPaperOptions = {
+        name: '_blank',
+        specs: [
+          'fullscreen=yes',
+          'titlebar=yes',
+          'scrollbars=yes'
+        ],
+        styles: [
+          'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
+          'https://unpkg.com/kidlat-css/css/kidlat.css',
+          'landscape.css'
+        ],
+        timeout: 1000, // default timeout before the print window appears
+        autoClose: false, // if false, the window will not close after printing
+        windowTitle: window.document.title, // override the window title
+      };
+      await this.$htmlToPaper('printMe', vueHtmlToPaperOptions);
     },
     async getPatientVitals() {
       this.is_busy = true;
@@ -168,13 +173,7 @@ export default {
     },
   },
   beforeMount(){
-    this.displayed_metrics_fields = this.default_metrics_fields;
-    this.available_metrics_fields = [];
-    for (let i=0; i<this.all_metrics_fields.length; i++) {
-      if (this.displayed_metrics_fields.includes(this.all_metrics_fields[i]) == false) {
-        this.available_metrics_fields.push(this.all_metrics_fields[i]);
-      }
-    }
+    this.displayed_metrics_fields = [...this.default_metrics_fields];
     this.getPatientVitals();
   }
 };
@@ -182,50 +181,21 @@ export default {
 
 <style scoped>
 
-.btn-accordion { 
+.cmd-btn {
+  padding-left: 4px; 
+  padding-right: 4px;
+}
+
+.btn { 
   color: #ffffff; 
   background-color: #2196F3; 
   border-color: #2196F3; 
 } 
- 
-.btn-accordion:hover, 
-.btn-accordion:focus, 
-.btn-accordion:active, 
-.btn-accordion.active, 
-.open .dropdown-toggle.btn-accordion { 
-  color: #ffffff; 
-  background-color: #2196F3; 
-  border-color: #2196F3; 
-} 
- 
-.btn-accordion:active, 
-.btn-accordion.active, 
-.open .dropdown-toggle.btn-accordion { 
-  background-image: none; 
-} 
- 
-.btn-accordion.disabled, 
-.btn-accordion[disabled], 
-fieldset[disabled] .btn-accordion, 
-.btn-accordion.disabled:hover, 
-.btn-accordion[disabled]:hover, 
-fieldset[disabled] .btn-accordion:hover, 
-.btn-accordion.disabled:focus, 
-.btn-accordion[disabled]:focus, 
-fieldset[disabled] .btn-accordion:focus, 
-.btn-accordion.disabled:active, 
-.btn-accordion[disabled]:active, 
-fieldset[disabled] .btn-accordion:active, 
-.btn-accordion.disabled.active, 
-.btn-accordion[disabled].active, 
-fieldset[disabled] .btn-accordion.active { 
-  background-color: #2196F3; 
-  border-color: #2196F3; 
-} 
- 
-.btn-accordion .badge { 
-  color: #2196F3; 
-  background-color: #ffffff; 
+
+.self-building-square-spinner {
+  margin-right: 15px;
+  margin-left: 20px;
+  margin-top: 25px;
 }
 
 </style>

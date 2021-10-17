@@ -1,11 +1,11 @@
 <template>
   <b-container fluid fill-height class='px-0'>
-    <vc-layout v-resize="resize" class="align-center mx-0" spacing="8">
+    <vc-layout class="align-center mx-0" spacing="8">
       <vc-col :span="24">
         <vc-card class="elevation-3">
           <card-title-nav title="Medications"/>
 
-          <vc-card-text>
+          <vc-card-text class="pa-2">
             <b-row class="my-1">
               <b-col sm="3">
                 <div class="my-2">

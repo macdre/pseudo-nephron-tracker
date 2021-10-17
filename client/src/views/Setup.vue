@@ -1,6 +1,6 @@
 <template>
   <b-container fluid fill-height class='px-0'>
-    <vc-layout v-resize="resize" class="align-center mx-0" spacing="8">
+    <vc-layout class="align-center mx-0" spacing="8">
       <vc-col :span="24">
         <vc-card class="elevation-3">
           <card-title-nav title="Setup"/>

@@ -1,11 +1,11 @@
 <template>
   <b-container fluid fill-height class='px-0'>
-    <vc-layout v-resize="resize" class="align-center mx-0" spacing="8">
+    <vc-layout class="align-center mx-0" spacing="8">
       <vc-col :span="24">
         <vc-card class="elevation-3">
           <card-title-nav title="Metrics Menu"/>
-          <vc-card-text>
-            <vc-layout v-resize="resize" :class="['align-center', 'mx-0']">
+          <vc-card-text class="pa-2">
+            <vc-layout :class="['align-center', 'mx-0']">
               <menu-card v-for="card in cards" v-bind:key="card.id" v-bind:card="card"/>      
             </vc-layout>
           </vc-card-text>
