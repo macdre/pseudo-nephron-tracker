@@ -11,7 +11,7 @@
                 <field-selector 
                   v-bind:all_fields="all_metrics_fields"
                   v-bind:default_fields="default_metrics_fields"
-                  v-bind:displayed_fields="chart_config.values"
+                  v-bind:displayed_fields="displayed_fields"
                   @listUpdate="updateList"
                 />
               </b-col>
@@ -19,17 +19,10 @@
 
             <b-row class="my-1">
               <b-col :span="24">
-              
-              <!--
-                <D3LineChart 
-                  :config="chart_config" 
-                  :datum="metric_items" 
-                  :key="metric_items">
-                </D3LineChart>
-              -->
-
-                <line-chart
-                  :graph_data="metric_items">
+                <line-chart v-if="metric_items"
+                  v-bind:graph_data="metric_items"
+                  v-bind:column_list="displayed_fields"
+                  v-bind:date_field_name="date_field_name">
                 </line-chart>
               </b-col>
             </b-row>
@@ -57,30 +50,20 @@ export default {
   name: "metrics-graph",
   data() {
     return {
-      metric_items: [{"time": "2021-01-14", "value": 120},{"time": "2021-01-15", "value": 140}],
-      all_metrics_fields: ['entry_date', 'systolic_pressure', 'diastolic_pressure', 'weight_in_kg', 
+      metric_items: null,
+      all_metrics_fields: ['systolic_pressure', 'diastolic_pressure', 'weight_in_kg', 
         'initial_drain', 'total_uf', 'average_dwell', 'added_lost_dwell_type', 'added_lost_dwell_value'],
-      default_metrics_fields: ['entry_date', 'systolic_pressure'],
-      quantity: 9999,
-      chart_config: {
-        date: {
-          key: 'entry_date',
-          inputFormat: '%Y-%m-%d',
-          outputFormat: '%Y-%m-%d'
-        },
-        values: ['entry_date', 'systolic_pressure'],
-        axis: {
-          yTitle: "Thingers",
-          xTitle: "Thangers"
-        }
-      }
+      default_metrics_fields: ['systolic_pressure','diastolic_pressure'],
+      displayed_fields: ['systolic_pressure','diastolic_pressure'],
+      date_field_name: 'entry_date',
+      quantity: 10
     };
   },
   computed: {
   },
   methods: {
     updateList(updatedList) {
-      this.chart_config.values = updatedList;
+      this.displayed_fields = updatedList;
     },
     async getPatientVitals() {
       var sub_array = this.$auth.user.sub.split("|");
@@ -100,13 +83,12 @@ export default {
           }
         });
         this.metric_items = data;
-        console.log(data);
       }
     }
   },
   beforeMount(){
-    this.chart_config.values = [...this.default_metrics_fields];
-    //this.getPatientVitals();
+    this.displayed_fields = [...this.default_metrics_fields];
+    this.getPatientVitals();
   },
 };
 </script>
