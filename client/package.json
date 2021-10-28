@@ -10,12 +10,12 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "@auth0/auth0-spa-js": "^1.17.1",
+    "@auth0/auth0-spa-js": "^1.12.2",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/vue-fontawesome": "^2.0.2",
-    "@mdi/font": "^6.1.95",
-    "axios": "^0.21.4",
+    "@mdi/font": "^6.4.95",
+    "axios": "^0.23.0",
     "bootstrap-vue": "^2.21.2",
     "d3": "^7.1.1",
     "epic-spinners": "^1.1.0",
@@ -30,16 +30,14 @@
     "vuecidity": "^1.0.7"
   },
   "devDependencies": {
-    "@babel/core": "^7.15.5",
-    "@babel/preset-env": "^7.15.6",
+    "@babel/core": "^7.15.8",
+    "@babel/preset-env": "^7.15.8",
     "@babel/plugin-proposal-function-bind": "^7.14.5",
     "@vue/babel-preset-app": "^4.5.14",
     "@vue/cli": "^4.5.14",
     "@vue/cli-plugin-babel": "^4.5.14",
     "@vue/cli-service": "^4.5.14",
     "vue-template-compiler": "^2.6.14",
-    "node-sass": "^5.0.0",
-    "sass-loader": "^10.1.1",
     "webpack": "^4.44.2"
   },
   "postcss": {
