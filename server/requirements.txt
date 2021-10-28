@@ -2,9 +2,8 @@ flask==1.1.4
 six>=1.16.0
 smart-open>=5.2.1
 Gunicorn>=20.1.0
-pathlib>=1.0.1
 connexion>=2.9.0
-swagger_ui_bundle>=0.0.8
+swagger_ui_bundle>=0.0.9
 flask_cors>=3.0.10
 psycopg2>=2.9.1
 python-jose>=3.3.0
