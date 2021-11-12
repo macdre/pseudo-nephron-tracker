@@ -1,6 +1,7 @@
 import Vue from 'vue';
 
 import Vuecidity from 'vuecidity';
+import 'bootstrap';
 import { IconsPlugin, BootstrapVue } from 'bootstrap-vue';
 
 import { library } from "@fortawesome/fontawesome-svg-core";
