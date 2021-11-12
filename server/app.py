@@ -170,7 +170,10 @@ logging.basicConfig(level=logging.INFO)
 CORS(application)
 application.config['PROPAGATE_EXCEPTIONS'] = True
 application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-application.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+uri = os.getenv("DATABASE_URL")  # or other relevant config var
+if uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://", 1)
+application.config['SQLALCHEMY_DATABASE_URI'] = uri
 db.init_app(application)
 
 @application.errorhandler(AuthError)
