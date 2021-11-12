@@ -97,11 +97,26 @@
                     <!-- Hard code the locale to de as it gives us a 24 hour clock that is 0-based -->
                     <b-form-timepicker required id="average_dwell" v-model="average_dwell" locale="de"></b-form-timepicker>
                   </b-form-group>
-                  <b-form-row class="justify-content-end">
-                    <b-col class="col-auto"><label class="Absolute-Center">Added/Lost Dwell:</label></b-col>
-                    <b-col class="col-auto"><b-form-select required id="added_lost_dwell_type" v-model="added_lost_dwell_type" :options="addedLostOptions"/></b-col>
-                    <b-col class="col-auto"><b-form-timepicker required id="added_lost_dwell_value" v-model="added_lost_dwell_value" locale="de"/></b-col>
-                  </b-form-row>
+
+                  <b-form-group
+                    label-cols-sm="6"
+                    label="Added/Lost Dwell?"
+                    label-align-sm="right"
+                    label-for="added_lost_dwell_type"
+                  >
+                    <b-form-select required id="added_lost_dwell_type" v-model="added_lost_dwell_type" :options="addedLostOptions"/>
+                  </b-form-group>
+
+                  <b-form-group
+                    label-cols-sm="6"
+                    label="Added/Lost Time:"
+                    label-align-sm="right"
+                    label-for="added_lost_dwell_value"
+                  >
+                    <!-- Hard code the locale to de as it gives us a 24 hour clock that is 0-based -->
+                    <b-form-timepicker required id="added_lost_dwell_value" v-model="added_lost_dwell_value" locale="de"/>
+                  </b-form-group>
+
                 </vc-col>
 
                 <vc-col :span="12" xs24 sm12 md6>
@@ -113,7 +128,7 @@
                     label-align-sm="right"
                     label-for="drain_color"
                   >
-                    <b-form-select required id="drain_color" v-model="drain_color" :options="drainColorOptions"></b-form-select>
+                    <b-form-select required id="drain_color" v-model="drain_color" :options="drainColorOptions"></b-form-select>    
                   </b-form-group>
                   <b-form-group
                     label-cols-sm="6"
@@ -228,24 +243,24 @@ export default {
       success: false,
       error: false,
       loading: false,
-      error_message: "",
+      error_message: '',
       entry_date: moment.utc(new Date()).local().format('YYYY-MM-DD'),
-      systolic_pressure: "",
-      diastolic_pressure: "",
-      weight_in_kg: "",
-      initial_drain: "",
-      total_uf: "",
+      systolic_pressure: '',
+      diastolic_pressure: '',
+      weight_in_kg: '',
+      initial_drain: '',
+      total_uf: '',
       average_dwell: "01:30",
-      added_lost_dwell_type: null,
-      added_lost_dwell_value: "00:00",
-      drain_color: null,
-      drain_clarity: null,
-      fibrin_present: null,
-      exit_color: null,
-      exit_sensitivity: null,
-      exit_condition: null,
-      bowel_obs: null,
-      treatment_problems: null,
+      added_lost_dwell_type: 'added',
+      added_lost_dwell_value: '00:30',
+      drain_color: 'no-color',
+      drain_clarity: 'clear',
+      fibrin_present: 'no',
+      exit_color: 'normal',
+      exit_sensitivity: 'normal',
+      exit_condition: 'normal',
+      bowel_obs: 'normal',
+      treatment_problems: 'no',
       comments: null,
       addedLostOptions: [
         { value: null, text: 'Select...' },
@@ -382,6 +397,7 @@ export default {
 
           })
           .finally(() => {
+            window.scrollTo(0,0);
             this.loading = false;
           }
         );                      
@@ -389,26 +405,26 @@ export default {
       }
     },
     onReset(e) {
-      e.preventDefault()
-      this.error_message = ""
+      e.preventDefault();
+      this.error_message = "";
       // Reset our form values
-      this.entry_date = moment.utc(new Date()).local().format('YYYY-MM-DD')
-      this.systolic_pressure = ""
-      this.diastolic_pressure = ""
-      this.weight_in_kg = ""
-      this.initial_drain = ""
-      this.total_uf = ""
-      this.average_dwell = "01:30"
-      this.added_lost_dwell_type = null
-      this.added_lost_dwell_value = "00:00"
-      this.drain_color = null
-      this.drain_clarity = null
-      this.fibrin_present = null
-      this.exit_color = null
-      this.exit_sensitivity = null
-      this.exit_condition = null
-      this.bowel_obs = null
-      this.treatment_problems = null
+      this.entry_date = moment.utc(new Date()).local().format('YYYY-MM-DD');
+      this.systolic_pressure = '';
+      this.diastolic_pressure = '';
+      this.weight_in_kg = '';
+      this.initial_drain = '';
+      this.total_uf = '';
+      this.average_dwell = '01:30';
+      this.added_lost_dwell_type = 'added';
+      this.added_lost_dwell_value = '00:30';
+      this.drain_color = 'no-color';
+      this.drain_clarity = 'clear';
+      this.fibrin_present = 'no';
+      this.exit_color = 'normal';
+      this.exit_sensitivity = 'normal';
+      this.exit_condition = 'normal';
+      this.bowel_obs = 'normal';
+      this.treatment_problems = 'no';
       this.comments = null
 
       this.success = false
