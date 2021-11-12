@@ -22,10 +22,12 @@ import HighlightJs from './directives/highlight';
 import { domain, clientId, audience } from '../auth_config.json';
 import VueHtmlToPaper from 'vue-html-to-paper';
 import VueBlobJsonCsv from 'vue-blob-json-csv';
+import jquery from 'jquery';
 
 Vue.config.productionTip = false;
 Vue.use(Vuecidity);
 Vue.use(IconsPlugin);
+Vue.use(jquery);
 Vue.use(BootstrapVue);
 Vue.use(VueHtmlToPaper);
 Vue.use(VueBlobJsonCsv);
