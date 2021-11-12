@@ -168,6 +168,7 @@ application.logger.handlers = gunicorn_logger.handlers
 application.logger.setLevel(gunicorn_logger.level)
 logging.basicConfig(level=logging.INFO)
 CORS(application)
+application.config['PROPAGATE_EXCEPTIONS'] = True
 application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 application.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 db.init_app(application)
