@@ -164,7 +164,7 @@ def patch_patient_vitals(PatientVitals):
 @requires_auth
 def get_patient_medications(user_id):
     # do something
-    Return '200'
+    return '200'
 
 app = connexion.FlaskApp(__name__, specification_dir='swagger/')
 app.add_api('swagger.yaml')
