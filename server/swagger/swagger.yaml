@@ -109,7 +109,7 @@ paths:
           description: The specified user_id was not found.
         default:
           description: An unspecified error occurred
-/patient_medications:
+  /patient_medications:
     get:
       operationId: app.get_patient_medications
       summary: Get the requested patient's medications
@@ -121,7 +121,21 @@ paths:
           description: The ID of the user to return.
           schema:
             type: string
-
+      responses:
+        '200':
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/patient_vitals'
+        '400':
+          description: The specified user_id is invalid.
+        '404':
+          description: The specified user_id was not found.
+        default:
+          description: An unspecified error occurred
             
 components:
   schemas:
