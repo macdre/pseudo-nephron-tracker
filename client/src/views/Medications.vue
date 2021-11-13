@@ -6,36 +6,41 @@
           <card-title-nav title="Medications"/>
 
           <vc-card-text class="pa-2">
-            <b-row class="my-1">
-              <b-col sm="3">
-                <div class="my-2">
-                  <b-button @click="callApi" small color="primary">Get Test</b-button>
-                </div>
-                <p>{{ apiMessage1 }}</p>
-              </b-col>
+            <div>
+
+              <b-row class="my-1">
+                <b-col :span="24">
+                  <b-table striped hover :items="items" :fields="fields">
+                    <template v-slot:cell(name)="row">
+                      <b-form-input v-model="row.item.name"/>
+                    </template>
+                    <template v-slot:cell(dose)="row">
+                      <b-form-textarea v-model="row.item.dose"/>
+                    </template>
+                    <template #cell(-)="data">
+                      <b-button @click="removeRow(data.index, $event)" variant="primary">
+                        <font-awesome-icon icon="times"/>
+                      </b-button>
+                    </template>
+                  </b-table>
+                </b-col>
+              </b-row>
+
+              <b-row class="my-1">
+                <b-col :span="24">
+                  <b-button class="mr-2" @click="addRow" variant="primary">
+                    Add <font-awesome-icon icon="plus"/>
+                  </b-button>  
+                  <b-button class="mr-2" @click="saveSet" variant="primary">
+                    Save <font-awesome-icon icon="save"/>
+                  </b-button>
+                  <b-button class="mr-2" @click="resetAll" variant="danger">
+                    Reset <font-awesome-icon icon="dumpster-fire"/>
+                  </b-button>
+                </b-col>
             </b-row>
 
-            <b-row class="my-1">
-              <b-col sm="3">
-                <b-form-input
-                  v-model="user_id"
-                  label="User ID"
-                  placeholder="123"
-                ></b-form-input>
-              </b-col>
-              <b-col sm="3">
-                <b-form-input
-                  v-model="quantity"
-                  label="Quantity"
-                  placeholder="1"
-                ></b-form-input>
-              </b-col>
-              <b-col sm="3">
-                <b-button @click="getPatientVitals" small color="primary">Get Patient Vitals</b-button>
-                <p>{{ apiMessage2 }}</p>
-              </b-col>
-            </b-row>
-    
+            </div>
           </vc-card-text>
         </vc-card>
       </vc-col>
@@ -57,10 +62,26 @@ export default {
       apiMessage1: "",
       apiMessage2: "",
       user_id: "",
-      quantity: ""
+      quantity: "",
+      fields: [{key: "name", label: "Name"}, {key: "dose", label: "Dosage"}, "-"],
+      default_items: [{ name: "Yellows", dose: "10mg twice daily" }, { name: "Oranges", dose: "200mg once daily" }, { name: "Purples", dose: "idk" },{ name: "Blues", dose: "all of them" }],
+      dummy_row: { name: "Yellows", dose: "10mg twice daily" },
+      items: []
     };
   },
   methods: {
+    removeRow(index, e) {
+      this.$delete(this.items, index);
+    },
+    addRow () {
+      this.items.push(this.dummy_row);
+    },
+    saveSet () {
+
+    },
+    resetAll () {
+
+    },
     async callApi() {
       // Get the access token from the auth wrapper
       const token = await this.$auth.getTokenSilently();
@@ -87,6 +108,10 @@ export default {
       });
       this.apiMessage2 = data;
     }
+  },
+  beforeMount(){
+    this.items = this.default_items;
+    //this.getPatientVitals();
   }
 };
 </script>

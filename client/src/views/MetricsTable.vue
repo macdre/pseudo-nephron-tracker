@@ -18,7 +18,7 @@
             </b-row>
 
             <b-row class="my-1">
-              <b-col cols="3">
+              <b-col cols="4">
                 <b-card no-body class="mb-1 cmd-btn">
                   <b-button class="btn w-100" @click="print" variant="primary">
                     Print <font-awesome-icon icon="print"/>
@@ -26,12 +26,12 @@
                 </b-card>
               </b-col>
 
-              <b-col cols="6"></b-col>
+              <b-col cols="4"></b-col>
 
-              <b-col cols="3">
+              <b-col cols="4">
                 <b-card no-body class="mb-1 cmd-btn">
                   <b-button class="btn w-100" @click="doExport" variant="primary">
-                    Export Raw Data <font-awesome-icon icon="file-download"/>
+                    Export <font-awesome-icon icon="file-download"/>
                   </b-button>
                   <vue-blob-json-csv
                     @success="handleSuccess"
@@ -108,11 +108,11 @@ export default {
       per_page: 10,
       current_page: 1,
       metric_items: '',
-      all_metrics_fields: ['entry_date', 'user_id', 'entry_date', 'systolic_pressure', 'diastolic_pressure', 'weight_in_kg', 
+      all_metrics_fields: ['entry_date', 'user_id', 'systolic_pressure', 'diastolic_pressure', 'weight_in_kg', 
         'initial_drain', 'total_uf', 'average_dwell', 'added_lost_dwell_type', 'added_lost_dwell_value', 'drain_color', 
         'drain_clarity', 'fibrin_present', 'exit_color', 'exit_sensitivity', 'exit_condition', 'bowel_obs', 'treatment_problems', 
         'comments'],
-      default_metrics_fields: ['entry_date', 'systolic_pressure', 'diastolic_pressure', 'weight_in_kg', 'initial_drain'],
+      default_metrics_fields: ['entry_date', 'initial_drain', 'total_uf', 'systolic_pressure', 'diastolic_pressure'],
       displayed_metrics_fields: [],
       quantity: 9999,
       seen: false

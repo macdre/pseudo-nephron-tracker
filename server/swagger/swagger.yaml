@@ -109,7 +109,20 @@ paths:
           description: The specified user_id was not found.
         default:
           description: An unspecified error occurred
+/patient_medications:
+    get:
+      operationId: app.get_patient_medications
+      summary: Get the requested patient's medications
+      description: Endpoint that returns a list of a patient's medications
+      parameters:
+        - name: user_id
+          in: query
+          required: true
+          description: The ID of the user to return.
+          schema:
+            type: string
 
+            
 components:
   schemas:
     patient_vitals:

@@ -9,6 +9,7 @@ import MetricsTable from "../views/MetricsTable.vue";
 import MetricsGraph from "../views/MetricsGraph.vue";
 import Medications from "../views/Medications.vue";
 import Setup from "../views/Setup.vue";
+import InventoryMenu from "../views/InventoryMenu.vue";
 import { authGuard } from "../auth";
 
 Vue.use(Router);
@@ -35,9 +36,21 @@ const router = new Router({
       beforeEnter: authGuard
     },
     {
+      path: "/inventory-menu",
+      name: "inventory-menu",
+      component: InventoryMenu,
+      beforeEnter: authGuard
+    },
+    {
       path: "/inventory",
       name: "inventory",
       component: Inventory,
+      beforeEnter: authGuard
+    },
+    {
+      path: "/setup",
+      name: "setup",
+      component: Setup,
       beforeEnter: authGuard
     },
     {
@@ -62,12 +75,6 @@ const router = new Router({
       path: "/medications",
       name: "medications",
       component: Medications,
-      beforeEnter: authGuard
-    },
-    {
-      path: "/setup",
-      name: "setup",
-      component: Setup,
       beforeEnter: authGuard
     }
   ]

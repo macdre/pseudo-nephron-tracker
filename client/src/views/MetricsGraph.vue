@@ -53,8 +53,8 @@ export default {
       metric_items: null,
       all_metrics_fields: ['systolic_pressure', 'diastolic_pressure', 'weight_in_kg', 
         'initial_drain', 'total_uf', 'average_dwell', 'added_lost_dwell_type', 'added_lost_dwell_value'],
-      default_metrics_fields: ['systolic_pressure','diastolic_pressure'],
-      displayed_fields: ['systolic_pressure','diastolic_pressure'],
+      default_metrics_fields: ['initial_drain', 'total_uf'],
+      displayed_fields: ['initial_drain', 'total_uf'],
       date_field_name: 'entry_date',
       quantity: 10
     };

@@ -1,7 +1,7 @@
 <template>
   <div class="mb-0">
     <b-navbar toggleable="md" type="dark" variant="dark">
-      <b-navbar-brand to="/" style="font-size: medium">
+      <b-navbar-brand to="/" style="font-size: large">
         <img src="/logo.png" alt="logo" width=50>
         Pseudo-Nephron-Project
       </b-navbar-brand>

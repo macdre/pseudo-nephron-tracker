@@ -90,6 +90,14 @@
                   </b-form-group>
                   <b-form-group
                     label-cols-sm="6"
+                    label="Manual Drain (Added to UF):"
+                    label-align-sm="right"
+                    label-for="manual_drain"
+                  >
+                    <b-form-input required id="manual_drain" v-model.number="manual_drain" type="number"></b-form-input>
+                  </b-form-group>
+                  <b-form-group
+                    label-cols-sm="6"
                     label="Average Dwell:"
                     label-align-sm="right"
                     label-for="average_dwell"
@@ -250,6 +258,7 @@ export default {
       weight_in_kg: '',
       initial_drain: '',
       total_uf: '',
+      manual_drain: 0,
       average_dwell: "01:30",
       added_lost_dwell_type: 'added',
       added_lost_dwell_value: '00:30',
@@ -334,7 +343,7 @@ export default {
           diastolic_pressure: this.diastolic_pressure,
           weight_in_kg: this.weight_in_kg,
           initial_drain: this.initial_drain,
-          total_uf: this.total_uf,
+          total_uf: (this.total_uf + this.manual_drain),
           average_dwell: this.average_dwell,
           added_lost_dwell_type: this.added_lost_dwell_type,
           added_lost_dwell_value: this.added_lost_dwell_value,
@@ -414,6 +423,7 @@ export default {
       this.weight_in_kg = '';
       this.initial_drain = '';
       this.total_uf = '';
+      this.manual_drain = 0;
       this.average_dwell = '01:30';
       this.added_lost_dwell_type = 'added';
       this.added_lost_dwell_value = '00:30';
