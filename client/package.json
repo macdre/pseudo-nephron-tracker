@@ -33,6 +33,8 @@
     "@babel/core": "^7.16.0",
     "@babel/preset-env": "^7.16.4",
     "@babel/plugin-proposal-function-bind": "^7.16.0",
+    "elliptic": "^6.5.4",
+    "ssri": "^6.0.2",
     "@vue/babel-preset-app": "^4.5.15",
     "@vue/cli": "^4.5.15",
     "@vue/cli-plugin-babel": "^4.5.15",
