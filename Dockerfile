@@ -1,5 +1,5 @@
 # build the client node modules
-FROM nikolaik/python-nodejs:python3.10-nodejs14 as build-vue
+FROM nikolaik/python-nodejs:python3.10-nodejs16 as build-vue
 RUN apt-get update && apt-get --allow-change-held-packages -y install nodejs
 WORKDIR /app/client
 ENV PATH /app/client/node_modules/.bin:$PATH
@@ -8,7 +8,7 @@ RUN npm install
 RUN npm run build
 
 # production
-FROM nikolaik/python-nodejs:python3.10-nodejs14 as production
+FROM nikolaik/python-nodejs:python3.10-nodejs16 as production
 RUN apt-get update && apt-get --allow-change-held-packages -y install nginx python3 && \
     python3 -m ensurepip && \
     rm -r /usr/lib/python*/ensurepip && \
