@@ -5,3 +5,4 @@ debug.log
 __pycache__
 test_creds.sh
 run-local.sh
+package-lock.json
