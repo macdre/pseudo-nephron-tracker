@@ -7,5 +7,5 @@ marshmallow_sqlalchemy==0.27.0
 psycopg2==2.9.3
 python-jose==3.3.0
 six==1.16.0
-smart-open==5.2.1
+smart-open==6.0.0
 swagger_ui_bundle==0.0.9
