@@ -65,7 +65,7 @@
                     label-align-sm="right"
                     label-for="weight_in_kg"
                   >
-                    <b-form-input required id="weight_in_kg" v-model.number="weight_in_kg" placeholder="Please Enter" type="number"></b-form-input>
+                    <b-form-input required id="weight_in_kg" v-model.number="weight_in_kg" placeholder="Please Enter" type="number" step="any"></b-form-input>
                   </b-form-group>
                 </vc-col>
                 
