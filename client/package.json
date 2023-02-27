@@ -10,7 +10,7 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "@auth0/auth0-spa-js": "^1.22.1",
+    "@auth0/auth0-spa-js": "^2.0.4",
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@fortawesome/vue-fontawesome": "^2.0.8",
