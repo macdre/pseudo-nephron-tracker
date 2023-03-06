@@ -84,17 +84,26 @@ def delete_patient_vitals(user_id, entry_date):
 @cross_origin()
 @requires_auth
 def get_patient_vitals(user_id, quantity=1):
+    retry_count = 0
     gunicorn_logger.info("Processing a request with user_id: " + str(user_id) + " and quantity: " + str(quantity))
-    try:
-        query_result = db.session \
-            .query(PatientVitals) \
-            .filter(PatientVitals.user_id == user_id) \
-            .order_by(PatientVitals.entry_date.desc()).limit(quantity).all()
-        # We need to catch db errors and convert them into http return codes
-        return json.dumps([PatientVitalsSchema().dump(row) for row in query_result])
-    except (marsh_exceptions.ValidationError, sqlalchemy_exceptions.DataError) as e:
-        gunicorn_logger.info("Caught exception on get_patient_vitals: " + str(e))
-        return "Caught exception on get_patient_vitals: " + str(e), 422
+
+    while retry_count < MAX_RETRIES:
+        try:
+            query_result = db.session \
+                .query(PatientVitals) \
+                .filter(PatientVitals.user_id == user_id) \
+                .order_by(PatientVitals.entry_date.desc()).limit(quantity).all()
+            # We need to catch db errors and convert them into http return codes
+            return json.dumps([PatientVitalsSchema().dump(row) for row in query_result])
+        except (marsh_exceptions.ValidationError, sqlalchemy_exceptions.DataError) as e:
+            gunicorn_logger.info("Caught exception on get_patient_vitals: " + str(e))
+            return "Caught exception on get_patient_vitals: " + str(e), 422
+        except (psy_errors.OperationalError) as e:
+            gunicorn_logger.info("Caught connection error on get_patient_vitals: " + str(e))
+            gunicorn_logger.info("Retrying... ")
+            retry_count = retry_count + 1
+    gunicorn_logger.info("Exhausted retries")
+    return None
 
 @cross_origin()
 @requires_auth
@@ -104,41 +113,77 @@ def post_patient_vitals(body):
     # First we need to make sure the user_id that is passed in is valid
     user_id = body['patient_vitals']['user_id']
     gunicorn_logger.info("Got user_id: " + user_id)
-    enrolled_query_result = db.session \
-        .query(EnrolledPatients) \
-        .filter(EnrolledPatients.user_id == user_id) \
-        .limit(1).all()
-    is_patient_enrolled = len(enrolled_query_result) > 0
+    retry_count = 0
+    is_patient_enrolled = False
+    while retry_count < MAX_RETRIES:
+        try:
+            enrolled_query_result = db.session \
+                .query(EnrolledPatients) \
+                .filter(EnrolledPatients.user_id == user_id) \
+                .limit(1).all()
+            is_patient_enrolled = len(enrolled_query_result) > 0
+            break
+        except (psy_errors.OperationalError) as e:
+            gunicorn_logger.info("Caught connection error on post_patient_vitals: " + str(e))
+            gunicorn_logger.info("Retrying... ")
+            retry_count = retry_count + 1
     gunicorn_logger.info("Is user enrolled? " + str(is_patient_enrolled))
 
     # Then we need to determine whether an entry for this date already exists
     entry_date = body['patient_vitals']['entry_date']
-    vitals_query_result = db.session \
-        .query(PatientVitals) \
-        .filter(PatientVitals.user_id == user_id, PatientVitals.entry_date == entry_date) \
-        .limit(1).all()
-    does_entry_exist = len(vitals_query_result) > 0
+    retry_count = 0
+    does_entry_exist = False
+    while retry_count < MAX_RETRIES:
+        try:
+            vitals_query_result = db.session \
+                .query(PatientVitals) \
+                .filter(PatientVitals.user_id == user_id, PatientVitals.entry_date == entry_date) \
+                .limit(1).all()
+            does_entry_exist = len(vitals_query_result) > 0
+            break
+        except (psy_errors.OperationalError) as e:
+            gunicorn_logger.info("Caught connection error on post_patient_vitals: " + str(e))
+            gunicorn_logger.info("Retrying... ")
+            retry_count = retry_count + 1    
     gunicorn_logger.info("Does an entry already exist for this date? " + str(does_entry_exist))
     
     # If user_id is valid and an entry doesn't exist, lets insert the request
     if is_patient_enrolled:
         if not does_entry_exist:  
+            retry_count = 0
+            while retry_count < MAX_RETRIES:
             # We need to catch db errors and convert them into http return codes
-            try:
-                new_patient_vitals = PatientVitalsSchema().load(body['patient_vitals'], session=db.session)
-                db.session.add(new_patient_vitals)
-                db.session.commit()
-            except marsh_exceptions.ValidationError as e:
-                gunicorn_logger.info("Caught exception on insert: " + str(e))
-                return "Caught exception on insert: " + str(e), 422
+                try:
+                    new_patient_vitals = PatientVitalsSchema().load(body['patient_vitals'], session=db.session)
+                    db.session.add(new_patient_vitals)
+                    db.session.commit()
+                    break
+                except marsh_exceptions.ValidationError as e:
+                    gunicorn_logger.info("Caught exception on insert: " + str(e))
+                    return "Caught exception on insert: " + str(e), 422
+                except (psy_errors.OperationalError) as e:
+                    gunicorn_logger.info("Caught connection error on post_patient_vitals: " + str(e))
+                    gunicorn_logger.info("Retrying... ")
+                    retry_count = retry_count + 1
+                    if retry_count >= MAX_RETRIES:
+                        return "Exhausted retries on insert: " + str(e), 500
 
-            # Then let's fetch the entry to ensure it was saved
-            vitals_query_result = db.session \
-                .query(PatientVitals) \
-                .filter(PatientVitals.user_id == user_id) \
-                .limit(1).all()
-            does_entry_exist = len(vitals_query_result) > 0
-
+            retry_count = 0
+            does_entry_exist = False
+            while retry_count < MAX_RETRIES:
+                try:
+                    # Then let's fetch the entry to ensure it was saved
+                    vitals_query_result = db.session \
+                        .query(PatientVitals) \
+                        .filter(PatientVitals.user_id == user_id) \
+                        .limit(1).all()
+                    does_entry_exist = len(vitals_query_result) > 0
+                    break
+                except (psy_errors.OperationalError) as e:
+                    gunicorn_logger.info("Caught connection error on post_patient_vitals: " + str(e))
+                    gunicorn_logger.info("Retrying... ")
+                    retry_count = retry_count + 1
+ 
             if does_entry_exist:
                 return "Insert Successful", 201
             else:
@@ -166,6 +211,7 @@ def get_patient_medications(user_id):
     # do something
     return '200'
 
+MAX_RETRIES = 5
 app = connexion.FlaskApp(__name__, specification_dir='swagger/')
 app.add_api('swagger.yaml')
 application = app.app
